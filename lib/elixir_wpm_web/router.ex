@@ -17,7 +17,8 @@ defmodule ElixirWPMWeb.Router do
   scope "/", ElixirWPMWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    # get "/", PageController, :index
+    live "/", HomeLive
   end
 
   # Other scopes may use custom stacks.
