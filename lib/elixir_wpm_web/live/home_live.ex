@@ -18,16 +18,18 @@ defmodule ElixirWPMWeb.HomeLive do
   end
 
   def handle_event("change", form_data, socket) do
-    IO.inspect(form_data)
+    # IO.inspect(form_data)
+    # IO.inspect(Map.fetch(form_data, "textinput"))
+    text_input = form_data["textinput"]["name"]
+    IO.inspect(text_input)
     {:noreply, socket}
-    IO.inspect(Map.fetch(form_data, "textinput"))
-    #get form data
+
+
+    #convert form data to a string?
     #get code snippet
     # compare against code snippet
 
   end
 
-  #got a form
-  #
 
 end
