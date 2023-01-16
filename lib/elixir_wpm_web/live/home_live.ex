@@ -5,7 +5,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def render(assigns) do
     ~H"""
-    <h3>Enum.map(element fn elem -> elem + 1 end)</h3>
+    <h3><%= snippet = "Enum.map(element fn elem -> elem + 1 end)" %></h3>
     <.form let={f} phx-change="change" for={:textinput}>
       <%= text_input f, :name %>
     </.form>
