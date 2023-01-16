@@ -19,7 +19,7 @@ One of the issues I have found with learning to program is a lack of recall for 
 This app should work on any desktop/laptop/browser.
 This current version is an MVP, Minimum Viable product, and will only contain the bare essential features. more will be added at a later date.
 ## Design
-[label](Elixir%20Words%20Per%20Minute.pdf)
+[Link to design pdf](Elixir%20Words%20Per%20Minute.pdf)
 ## Specification
 
 ## Validation
