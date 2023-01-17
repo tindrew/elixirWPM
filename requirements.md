@@ -21,22 +21,29 @@ This current version is an MVP, Minimum Viable product, and will only contain th
 ## Design
 [Link to design pdf](Elixir%20Words%20Per%20Minute.pdf)
 
-## Use cases
+## Use case
 
-### Measure user's WPM
+### Measure User's WPM for A Prompt
 
 ```mermaid
 sequenceDiagram
     actor User
     
     User->>System: Visit the site
+    System->>User: Webpage with Initial Prompt
+
+    
+    User->>System: First character entered starts timer
+    User->>System: Enter key stops timer
+
+    System->>User: Returns Feedback
 ```
-
-
 
 1. User visits website. Everything the user needs to play the game will be presented on one screen. For example in one corner, there will be a set of directions instructing the user what to do. The User will click the start button to start the game.
 
-2. Once the start button is clicked, a snippet of Elixir code will be presented, along with a box (or some other form) for the user to type into. The user will then try to write the code snippet completely before the timer runs out. Once the snippet is complete it will show the next snippet for a total of five snippets. 
+2. 
+
+Once the start button is clicked, a snippet of Elixir code will be presented, along with a box (or some other form) for the user to type into. The user will then try to write the code snippet completely before the timer runs out. Once the snippet is complete it will show the next snippet for a total of five snippets. 
 
 3. Once all the snippets are complete (or the time has run out) the user will be presented with a percentage of completed snippets. for example, if he misses some key strokes, that will lower the score.
 
@@ -46,93 +53,5 @@ sequenceDiagram
 
 ## Validation
 
-
-
-
-
-
-
-
-#### Examples
-
-
-
-## Basic Outline
-
-Here are the minimum sections you should have:
-
-1. **Identification**: Title, Author, Date, etc
-1. **Motivation**: Why is the SW being written?
-1. **Influences**: What concepts -- OO/Functional, Relational/Key-Value, Semantic Data, Regression/Stastical/Network ML -- are influencing the purpose, design and construction of the SW? What other SW is similar?
-1. **Context**: Who is the SW for? How is to be run?
-1. **Design**: What is the high-level design?
-1. **Specification**: What are the SW's: interfaces, functions, useability, etc.
-1. **Validation**: How is the SW to be tested?
-
-## Details
-
-### Identification
-
-### Motivation
-
-This section goes by a number of other terms such as (business) *purpose* or *need*.
-
-The purpose of this section is to describe:
-
-1. why the software should exist
-1. who the software is for
-1. asdf
-
-
-### Influences
-
-This purpose of this section is . . .
-
-### Context
-
-This section is sometimes called *environment*.
-
-The purpose of this section is to describe the conditions under which the software is expected to operate. It should also describe conditions and constraints in which the software is expected to degrade or cease to function altogether.
-
-Examples of relevant information:
-
-1. Hardware (system) requirement
-1. asdf
-
-### Design Overview
-
-This section is sometimes called *(system) architecture*.
-
-#### Use Cases
-
-#### Personas
-
-#### Diagrams
-
-Useful diagrams include:
-
-* [Sequence](https://en.wikipedia.org/wiki/Sequence_diagram)
-* [Activity](https://en.wikipedia.org/wiki/Activity_diagram)
-* [Causal Loop](https://thesystemsthinker.com/causal-loop-construction-the-basics/)
-* [State](https://en.wikipedia.org/wiki/State_diagram)
-
-### Requirements Specification
-
-#### Interfaces
-
-Describe the interfaces:
-
-* The SW as a black box
-
-
-#### Functional
-
-#### Useability
-
-#### Observability
-
-#### Sustainability
-
-### Verification
-
-This section is sometimes called *(software or system) testing*.
+MVP will be manually tested.
+1
