@@ -20,7 +20,29 @@ This app should work on any desktop/laptop/browser.
 This current version is an MVP, Minimum Viable product, and will only contain the bare essential features. more will be added at a later date.
 ## Design
 [Link to design pdf](Elixir%20Words%20Per%20Minute.pdf)
+
+## Use cases
+
+### Measure user's WPM
+
+```mermaid
+sequenceDiagram
+    actor User
+    
+    User->>System: Visit the site
+```
+
+
+
+1. User visits website. Everything the user needs to play the game will be presented on one screen. For example in one corner, there will be a set of directions instructing the user what to do. The User will click the start button to start the game.
+
+2. Once the start button is clicked, a snippet of Elixir code will be presented, along with a box (or some other form) for the user to type into. The user will then try to write the code snippet completely before the timer runs out. Once the snippet is complete it will show the next snippet for a total of five snippets. 
+
+3. Once all the snippets are complete (or the time has run out) the user will be presented with a percentage of completed snippets. for example, if he misses some key strokes, that will lower the score.
+
 ## Specification
+
+
 
 ## Validation
 
@@ -33,9 +55,7 @@ This current version is an MVP, Minimum Viable product, and will only contain th
 
 #### Examples
 
-* https://web.cse.ohio-state.edu/~bair.41/616/Project/Example_Document/Req_Doc_Example.html
-* https://www.cse.msu.edu/~cse435/Handouts/SRSExample-webapp.doc
-* https://web.mit.edu/odsue/odsue-it/cis/SRSTemplate.html
+
 
 ## Basic Outline
 
@@ -52,16 +72,6 @@ Here are the minimum sections you should have:
 ## Details
 
 ### Identification
-
-Provide the following:
-
-1. Title
-1. Author
-1. Date
-1. State
-
-    a. One of: `DRAFT`, `UNDER REVIEW`, `FINAL`
-1. asdf
 
 ### Motivation
 
