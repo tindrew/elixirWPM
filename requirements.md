@@ -39,11 +39,10 @@ sequenceDiagram
     System->>User: Returns Feedback
 ```
 
-1. User visits website. Everything the user needs to play the game will be presented on one screen. For example in one corner, there will be a set of directions instructing the user what to do. The User will click the start button to start the game.
+1. User visits website. Everything the user needs to play the game will be presented on one screen. For example in one corner, there will be a set of directions instructing the user what to do. The user will start typing to start the game.
 
 2. 
-
-Once the start button is clicked, a snippet of Elixir code will be presented, along with a box (or some other form) for the user to type into. The user will then try to write the code snippet completely before the timer runs out. Once the snippet is complete it will show the next snippet for a total of five snippets. 
+On screen a snippet of code along with a box for the user to type into. The user will then try to write the code snippet completely before the timer runs out. Once the snippet is complete it will show the next snippet for a total of five snippets. 
 
 3. Once all the snippets are complete (or the time has run out) the user will be presented with a percentage of completed snippets. for example, if he misses some key strokes, that will lower the score.
 

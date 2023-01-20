@@ -9,22 +9,24 @@
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
-  <body>
-    <header>
-      <section class="container">
-        <nav>
-          <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
-            <% end %>
-          </ul>
-        </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src={Routes.static_path(@conn, "/images/phoenix.png")} alt="Phoenix Framework Logo"/>
-        </a>
-      </section>
-    </header>
-    <%= @inner_content %>
+  <body class="container flex h-screen justify-center items-center">
+    <div class="bg-white dark:bg-gray-800 ">
+    <div class="text-center w-full mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 z-20">
+        <h2 class="text-3xl font-extrabold text-black dark:text-white sm:text-4xl">
+            <span class="block">
+                Welcome to ElixirWPM
+            </span>
+            <span class="block text-indigo-500">
+                Start the game by typing the snippet!
+            </span>
+        </h2>
+        <div class="lg:mt-0 lg:flex-shrink-0">
+            <div class="mt-12 inline-flex rounded-md shadow">
+                <%= @inner_content %>
+            </div>
+        </div>
+    </div>
+</div>
+
   </body>
 </html>
