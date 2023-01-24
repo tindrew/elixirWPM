@@ -2,23 +2,16 @@ defmodule ElixirWPMWeb.HomeLive do
   use ElixirWPMWeb, :live_view
 
   import Phoenix.LiveView.Helpers
-
- @snippets [
-    "|> Enum.group_by(&(&1.name), &(&1.ids))",
-    "|> Enum.map(fn {color, ids} -> %{name: color, ids: List.flatten(ids)} end)",
-    "|> Enum.reduce(%{}, fn %{ids: ids, name: name}, acc ->",
-    "Map.update(acc, name, ids, fn prev_ids -> prev_ids ++ ids end)",
-    "|> Enum.map(fn {color, ids} -> %{name: color, ids: ids} end)",
-    "conn |> Plug.Conn.assign(:name, Keyword.get(opts, :name, background_job))",
-    "Enum.map(map, fn {k, v} -> {k, v * 2} end)"
-  ]
+  alias ElixirWPM.Snippets
 
   # @my_string "Enum.map(element fn elem -> elem + 1 end)"
   #TODO: use send_after
   #TODO: convert snippet to a list
 
+  @default_snippet "Enum.map(element fn elem -> elem + 1 end)"
+
   def mount(_params, _sessions, socket) do
-    {:ok, assign(socket, text_input: "", snippet: "Enum.map(element fn elem -> elem + 1 end)" )}
+    {:ok, assign(socket, text_input: "", snippet: @default_snippet )}
   end
 
   def render(assigns) do
@@ -47,7 +40,7 @@ defmodule ElixirWPMWeb.HomeLive do
     IO.inspect(socket)
     if text_input == socket.assigns.snippet do
       IO.inspect("some text")
-      {:noreply, assign(socket, snippet: Enum.random(@snippets), text_input: "")}
+      {:noreply, assign(socket, snippet: Snippets.random(), text_input: "")}
 
     else
       {:noreply, socket}
