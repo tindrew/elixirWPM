@@ -2,13 +2,16 @@ defmodule ElixirWPMWeb.HomeLive do
   use ElixirWPMWeb, :live_view
 
   import Phoenix.LiveView.Helpers
+  alias ElixirWPM.Snippets
 
   # @my_string "Enum.map(element fn elem -> elem + 1 end)"
   #TODO: use send_after
   #TODO: convert snippet to a list
 
+  @default_snippet "Enum.map(element fn elem -> elem + 1 end)"
+
   def mount(_params, _sessions, socket) do
-    {:ok, assign(socket, text_input: "", snippet: "Enum.map(element fn elem -> elem + 1 end)" )}
+    {:ok, assign(socket, text_input: "", snippet: @default_snippet )}
   end
 
   def render(assigns) do
@@ -31,15 +34,13 @@ defmodule ElixirWPMWeb.HomeLive do
   end
 
   def handle_event("submit", form_data, socket) do
-    # IO.inspect(form_data)
-    # IO.inspect(Map.fetch(form_data, "textinput"))
+
     text_input = form_data["textinput"]["name"]
     IO.inspect(text_input)
-    IO.inspect(@my_string)
     IO.inspect(socket)
     if text_input == socket.assigns.snippet do
       IO.inspect("some text")
-      {:noreply, assign(socket, snippet: "Enum.map(map, fn {k, v} -> {k, v * 2} end)", text_input: "")}
+      {:noreply, assign(socket, snippet: Snippets.random(), text_input: "")}
 
     else
       {:noreply, socket}
