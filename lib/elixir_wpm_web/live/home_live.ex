@@ -4,14 +4,11 @@ defmodule ElixirWPMWeb.HomeLive do
   import Phoenix.LiveView.Helpers
   alias ElixirWPM.Snippets
 
-  # @my_string "Enum.map(element fn elem -> elem + 1 end)"
-  #TODO: use send_after
-  #TODO: convert snippet to a list
-
   @default_snippet "Enum.map(element fn elem -> elem + 1 end)"
 
   def mount(_params, _sessions, socket) do
-    {:ok, assign(socket, text_input: "", snippet: @default_snippet )}
+    {:ok,
+     assign(socket, count: 60, submitted_snippets: 0, text_input: "", snippet: @default_snippet)}
   end
 
   def render(assigns) do
@@ -19,9 +16,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
     <h3 class="text-xl font-bold"><%= @snippet %></h3>
 
-    <%!-- <p><b>Here is something that changes:</b>
-       <%= assigns.new_data %>
-    </p> --%>
+    <h2 class="text-xl font-bold"><%= @count %> </h2>
 
     <.form let={f} phx-submit="submit"  phx-change="change" for={:textinput}>
       <%= text_input f, :name,  value: @text_input, class: " rounded-lg border-transparent flex-1
@@ -30,36 +25,42 @@ defmodule ElixirWPMWeb.HomeLive do
     </.form>
 
     """
-
   end
 
   def handle_event("submit", form_data, socket) do
-
     text_input = form_data["textinput"]["name"]
     IO.inspect(text_input)
-    IO.inspect(socket)
+
     if text_input == socket.assigns.snippet do
       IO.inspect("some text")
-      {:noreply, assign(socket, snippet: Snippets.random(), text_input: "")}
 
+      {:noreply,
+       assign(socket,
+         submitted_snippets: socket.assigns.submitted_snippets + 1,
+         snippet: Snippets.random(),
+         text_input: ""
+       )}
     else
       {:noreply, socket}
     end
-    #list of snippets
-    #start timer
-    #user finishes typing
-    #if snippet matches form data, after a few seconds change snippet
-
-    # Take a list of snippets and cycle through them based on a timer.
-    #start the timer on first keystroke in the form
-    # End the timer when the form data matches the snippet
   end
 
   def handle_event("change", form_data, socket) do
+    if String.length(form_data["textinput"]["name"]) == 1 &&
+         socket.assigns.submitted_snippets == 0 do
+      :timer.send_interval(1000, self(), :tick)
+    end
+
     text_input = form_data["textinput"]["name"]
 
     {:noreply, assign(socket, text_input: text_input)}
   end
 
-
+  def handle_info(:tick, socket) do
+    if socket.assigns.count > 0 do
+      {:noreply, assign(socket, count: socket.assigns.count - 1)}
+    else
+      {:noreply, assign(socket, count: socket.assigns.count)}
+    end
+  end
 end

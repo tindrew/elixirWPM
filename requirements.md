@@ -1,6 +1,6 @@
 # Software Requirements Document
 
-# Software Requirements for: ???
+# Software Requirements for: ElixirWPM
 
 ## TOC
 
@@ -8,7 +8,7 @@
 
 | Title | Author | Date | Status | Version |
 |-------|--------|------|--------|--------|
-| Elixir WPM | tindrew | 01.01.23 |Draft|
+| Elixir WPM | tindrew | 01.01.23 |Draft|0.2
 
 ## Motivation
 Elixir Words Per Minute is a typing game that reinforces the muscle memory of programming with the language in a fun way by having the user type random Elixir code snippets within a time frame.
@@ -17,7 +17,7 @@ One of the issues I have found with learning to program is a lack of recall for 
 
 ## Context
 This app should work on any desktop/laptop/browser.
-This current version is an MVP, Minimum Viable product, and will only contain the bare essential features. more will be added at a later date.
+This current version is an MVP, Minimum Viable Product, and will only contain the bare essential features. more will be added at a later date.
 ## Design
 [Link to design pdf](Elixir%20Words%20Per%20Minute.pdf)
 
@@ -42,9 +42,13 @@ sequenceDiagram
 1. User visits website. Everything the user needs to play the game will be presented on one screen. For example in one corner, there will be a set of directions instructing the user what to do. The user will start typing to start the game.
 
 2. 
-On screen a snippet of code along with a box for the user to type into. The user will then try to write the code snippet completely before the timer runs out. Once the snippet is complete it will show the next snippet for a total of five snippets. 
+On screen a snippet of code along with a box for the user to type into. The user will then try to write the code snippets completely before the timer runs out. Once the snippet is complete it will show the next snippet.
 
-3. Once all the snippets are complete (or the time has run out) the user will be presented with a percentage of completed snippets. for example, if he misses some key strokes, that will lower the score.
+3. Once the time has run out the user will be presented with the average WPM and a score based on the correctness of the typed snippets. for example, if he misses some key strokes, that will lower the score.
+
+## Options
+
+1. User will be able to select a time in minutes that they want to play the game.
 
 ## Specification
 
@@ -54,3 +58,11 @@ On screen a snippet of code along with a box for the user to type into. The user
 
 MVP will be manually tested.
 1
+
+## Roadmap
+
+- Syntax highlighting
+- User signup / login
+- Leaderboards
+- 
+
