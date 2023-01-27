@@ -46,9 +46,12 @@ On screen a snippet of code along with a box for the user to type into. The user
 
 3. Once the time has run out the user will be presented with the average WPM and a score based on the correctness of the typed snippets. for example, if he misses some key strokes, that will lower the score.
 
+4. Add summary page for metrics
+
 ## Options
 
 1. User will be able to select a time in minutes that they want to play the game.
+2. Time stamps for each character typed
 
 ## Specification
 

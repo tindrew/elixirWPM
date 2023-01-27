@@ -8,13 +8,15 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def mount(_params, _sessions, socket) do
     {:ok,
-     assign(socket, count: 60, submitted_snippets: 0, text_input: "", snippet: @default_snippet)}
+     assign(socket, css_block: "hidden", count: 20, submitted_snippets: 0, text_input: "", snippet: @default_snippet)}
+
   end
+
 
   def render(assigns) do
     ~H"""
 
-    <h3 class="text-xl font-bold"><%= @snippet %></h3>
+    <h3 class="text-4xl font-bold"><%= @snippet %></h3>
 
     <h2 class="text-xl font-bold"><%= @count %> </h2>
 
@@ -23,6 +25,17 @@ defmodule ElixirWPMWeb.HomeLive do
        appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700
         placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"%>
     </.form>
+
+    <button  phx-click="restart" type="button" id="make-visible" class=" my-css-element mt-6 py-4 px-6  bg-indigo-600 hover:bg-indigo-700
+            focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200
+            text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg {{css_block}}"
+                                 >
+      Play again!
+    </button>
+
+
+
+
 
     """
   end
@@ -55,11 +68,25 @@ defmodule ElixirWPMWeb.HomeLive do
 
     {:noreply, assign(socket, text_input: text_input)}
   end
+# what should happen:
+    #   timer restarts
+    #   submitted_snippets reset to 0
+    #   hide button
+    #   does textinput need resetting to "" ? probably
+  def handle_event("show_css", _, socket) do
+    if socket.assigns.count <= 0 do
+
+      IO.inspect({:noreply, assign(socket, css_block: "visible")})
+    end
+    {:noreply, assign(socket, count: 60, submitted_snippets: 0)}
+  end
+
 
   def handle_info(:tick, socket) do
     if socket.assigns.count > 0 do
       {:noreply, assign(socket, count: socket.assigns.count - 1)}
     else
+
       {:noreply, assign(socket, count: socket.assigns.count)}
     end
   end
