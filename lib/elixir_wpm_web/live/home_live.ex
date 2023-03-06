@@ -8,7 +8,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def mount(_params, _sessions, socket) do
     {:ok,
-     assign(socket, css_block: "hidden", count: 20, submitted_snippets: 0, text_input: "", snippet: @default_snippet)}
+     assign(socket, css_block: "hidden", count: 10, submitted_snippets: 0, text_input: "", snippet: @default_snippet)}
 
   end
 
@@ -26,7 +26,7 @@ defmodule ElixirWPMWeb.HomeLive do
         placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"%>
     </.form>
 
-    <button  phx-click="restart" type="button" id="make-visible" class=" my-css-element mt-6 py-4 px-6  bg-indigo-600 hover:bg-indigo-700
+    <button  phx-click="restart" type="button" id="start-button" class="hidden my-css-element mt-6 py-4 px-6  bg-indigo-600 hover:bg-indigo-700
             focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200
             text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg {{css_block}}"
                                  >
@@ -58,6 +58,15 @@ defmodule ElixirWPMWeb.HomeLive do
     end
   end
 
+
+  def handle_event(:time_up, _, socket) do
+    if socket.assigns.count <= 0 do
+      IO.inspect("some streing here")
+    {:noreply, socket |> push_event("unhide", %{})}
+    end
+  end
+
+
   def handle_event("change", form_data, socket) do
     if String.length(form_data["textinput"]["name"]) == 1 &&
          socket.assigns.submitted_snippets == 0 do
@@ -73,7 +82,7 @@ defmodule ElixirWPMWeb.HomeLive do
     #   submitted_snippets reset to 0
     #   hide button
     #   does textinput need resetting to "" ? probably
-  def handle_event("show_css", _, socket) do
+  def handle_event("restart", _, socket) do
     if socket.assigns.count <= 0 do
 
       IO.inspect({:noreply, assign(socket, css_block: "visible")})
@@ -90,4 +99,7 @@ defmodule ElixirWPMWeb.HomeLive do
       {:noreply, assign(socket, count: socket.assigns.count)}
     end
   end
+
+
+
 end

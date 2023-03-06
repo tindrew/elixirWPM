@@ -42,3 +42,9 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+document.addEventListener("unhide", () => {
+    const button = document.getElementById("start-button");
+    button.classList.remove("hidden");
+    console.log("Im here!")
+  });
+  
