@@ -9,8 +9,17 @@
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
-  <body class="container flex h-screen justify-center items-center">
-    <div class="bg-white dark:bg-gray- ">
+  <body>
+    <nav class="flex bg-red-500 justify-center py-2 ">  
+        <Components.link href="/home">Home</Components.link>
+        <Components.link href="/about">About</Components.link>
+        <Components.link href="/score">Score Board</Components.link>
+        <Components.link href="/log-in">Log In</Components.link>
+    </nav>
+
+
+
+    <div class=" flex h-screen justify-center items-center      bg-white dark:bg-gray- ">
     <div class="text-center w-full mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 z-20">
         <h2 class="text-3xl font-extrabold text-black dark:text-gray sm:text-4xl">
             <span class="block">
@@ -21,7 +30,7 @@
             </span>
         </h2>
         <div class="lg:mt-0 lg:flex-shrink-0">
-            <div class="mt-12 inline-flex rounded-md">
+            <div class="mt-12 inline-flex">
                 <%= @inner_content %>
             </div>
         </div>
