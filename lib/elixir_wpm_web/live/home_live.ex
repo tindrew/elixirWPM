@@ -71,9 +71,12 @@ defmodule ElixirWPMWeb.HomeLive do
       :timer.send_interval(1000, self(), :tick)
     end
 
-    text_input = form_data["textinput"]["name"]
+    text_input = form_data["textinput"]["name"] |> IO.inspect()
+    #count keystrokes
 
-    {:noreply, assign(socket, text_input: text_input)}
+    words_per_minute = String.length(text_input) / 5
+
+    {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
   end
 
 
