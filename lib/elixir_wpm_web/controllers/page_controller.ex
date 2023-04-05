@@ -2,6 +2,6 @@ defmodule ElixirWPMWeb.PageController do
   use ElixirWPMWeb, :controller
 
   def index(conn, _params) do
-    render(conn, "index.htmll")
+    render(conn, "index.html")
   end
 end

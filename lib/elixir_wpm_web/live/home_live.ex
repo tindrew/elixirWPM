@@ -15,17 +15,15 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def render(assigns) do
     ~H"""
+    <section class="flex flex-col bg-red-400 h-screen w-screen justify-center items-center">
+    <h2 class="text-3xl font-bold">Welcome to ElixirWPM</h2>
+    <h3 class="text-indigo-500 text-2xl font-bold">Start the game by typing the snippet!</h3>
+
 
     <.my_table snippet={@snippet} count={@count} submitted_snippets={@submitted_snippets} words_per_minute={@words_per_minute} />
 
-
-
-
-
-
-
     <%= if @count == 0 do %>
-      <button  phx-click="restart" type="button" id="start-button" class=" my-css-element mt-6 py-4 px-6  bg-indigo-600 hover:bg-indigo-700
+      <button  phx-click="restart" type="button" id="start-button" class=" mt-6 py-4 px-6  bg-indigo-600 hover:bg-indigo-700
               focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200
               text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg {{css_block}}"
                                   >
@@ -40,6 +38,7 @@ defmodule ElixirWPMWeb.HomeLive do
         placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"%>
     </.form>
     <% end %>
+    </section>
     """
   end
 
@@ -74,7 +73,14 @@ defmodule ElixirWPMWeb.HomeLive do
     text_input = form_data["textinput"]["name"] |> IO.inspect()
     #count keystrokes
 
-    words_per_minute = String.length(text_input) / 5
+    #compare
+
+    # words_per_minute = String.length(text_input) / 5
+    #track number of characters typed
+    #how much time has passed
+    #when (or what time) did the player start what is the start time, what is the current time, and the difference between the two
+    words_per_minute = text_input |> String.graphemes() |> Enum.count |> div(5)
+    # string |> String.graphemes() |> Enum.count |> div(5)
 
     {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
   end
@@ -105,6 +111,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def my_table(assigns) do
     ~H"""
+    <section class="flex flex-col">
     <table>
       <tr>
         <td>
@@ -128,9 +135,10 @@ defmodule ElixirWPMWeb.HomeLive do
         </td>
       </tr>
     </table>
+    </section>
     """
   end
-end
+ end
 
 
 #raw words per minute is a calculation of how fast you type with no errors
