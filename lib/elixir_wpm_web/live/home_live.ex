@@ -8,7 +8,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def mount(_params, _sessions, socket) do
     {:ok,
-     assign(socket, css_block: "hidden", count: 30, submitted_snippets: 0, words_per_minute: 0, text_input: "", snippet: @default_snippet)}
+     assign(socket, css_block: "hidden", session_timer: 60, submitted_snippets: 0, words_per_minute: 0, text_input: "", snippet: @default_snippet)}
 
   end
 
@@ -20,9 +20,9 @@ defmodule ElixirWPMWeb.HomeLive do
     <h3 class="text-indigo-500 text-2xl font-bold">Start the game by typing the snippet!</h3>
 
 
-    <.my_table snippet={@snippet} count={@count} submitted_snippets={@submitted_snippets} words_per_minute={@words_per_minute} />
+    <.my_table snippet={@snippet} session_timer={@session_timer} submitted_snippets={@submitted_snippets} words_per_minute={@words_per_minute} />
 
-    <%= if @count == 0 do %>
+    <%= if @session_timer == 0 do %>
       <button  phx-click="restart" type="button" id="start-button" class=" mt-6 py-4 px-6  bg-indigo-600 hover:bg-indigo-700
               focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200
               text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg {{css_block}}"
@@ -67,42 +67,45 @@ defmodule ElixirWPMWeb.HomeLive do
   def handle_event("change", form_data, socket) do
     if String.length(form_data["textinput"]["name"]) == 1 &&
          socket.assigns.submitted_snippets == 0 do
+
       :timer.send_interval(1000, self(), :tick)
+       else
     end
-
+    start = DateTime.now!("Etc/UTC")
+    finish = DateTime.now!("Etc/UTC")
+    minutes = DateTime.diff(finish, start) |> div(60)
+    IO.inspect(minutes)
     text_input = form_data["textinput"]["name"] |> IO.inspect()
-    #count keystrokes
-
     #compare
 
-    # words_per_minute = String.length(text_input) / 5
+      words_per_minute = text_input |> String.graphemes() |> Enum.count |> div(5)
+
+      {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
+  end
     #track number of characters typed
     #how much time has passed
     #when (or what time) did the player start what is the start time, what is the current time, and the difference between the two
-    words_per_minute = text_input |> String.graphemes() |> Enum.count |> div(5)
+    #
     # string |> String.graphemes() |> Enum.count |> div(5)
 
-    {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
-  end
-
-
+    # words_per_minute = String.length(text_input) / 5 |>
 
 
     ##### Handles button click #######
     ###### restarts timer on click #######
-  def handle_event("restart", _, socket) do
-    if socket.assigns.count <= 0 do
-      # IO.inspect({:noreply, assign(socket, css_block: "visible")})
-    end
-    {:noreply, assign(socket, count: 30, submitted_snippets: 0, text_input: "")}
-  end
+  # def handle_event("restart", _, socket) do
+  #   if socket.assigns.session_timer <= 0 do
+  #     # IO.inspect({:noreply, assign(socket, css_block: "visible")})
+  #   end
+  #   {:noreply, assign(socket, session_timer: 30, submitted_snippets: 0, text_input: "")}
+  # end
 
   ####### Handles timer countdown ########
   def handle_info(:tick, socket) do
-    if socket.assigns.count > 0 do
-      {:noreply, assign(socket, count: socket.assigns.count - 1)}
+    if socket.assigns.session_timer > 0 do
+      {:noreply, assign(socket, session_timer: socket.assigns.session_timer - 1)}
     else
-      {:noreply, assign(socket, count: socket.assigns.count)}
+      {:noreply, assign(socket, session_timer: socket.assigns.session_timer)}
     end
   end
 
@@ -111,8 +114,8 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def my_table(assigns) do
     ~H"""
-    <section class="flex flex-col">
-    <table>
+    <section >
+    <table >
       <tr>
         <td>
           Current WPM goes here
@@ -120,10 +123,10 @@ defmodule ElixirWPMWeb.HomeLive do
           <br>
           Score History goes here
         </td>
-        <td>
+        <td class="flex flex-col justify-center items-center">
           <h3 class="text-4xl font-bold"><%= @snippet %></h3>
 
-          <h2 class="text-xl font-bold"><%= @count %> </h2>
+
 
           <h2 class="text-xl font-bold"><%= @submitted_snippets * 100 %> </h2>
 
@@ -131,7 +134,8 @@ defmodule ElixirWPMWeb.HomeLive do
             Highscore goes here
           </td>
         <td>
-          Session countdown timer goes here
+          Session Time
+          <h2 class="text-xl font-bold"><%= @session_timer %> </h2>
         </td>
       </tr>
     </table>
