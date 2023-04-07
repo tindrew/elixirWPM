@@ -71,34 +71,37 @@ defmodule ElixirWPMWeb.HomeLive do
       :timer.send_interval(1000, self(), :tick)
        else
     end
-    start = DateTime.now!("Etc/UTC")
-    finish = DateTime.now!("Etc/UTC")
-    minutes = DateTime.diff(finish, start) |> div(60)
-    IO.inspect(minutes)
-    text_input = form_data["textinput"]["name"] |> IO.inspect()
-    #compare
 
-      words_per_minute = text_input |> String.graphemes() |> Enum.count |> div(5)
+    elapsed_time = 60.0
+    text_input = form_data["textinput"]["name"] |> IO.inspect()
+    # word_count = text_input / 5
+    # minutes = elapsed_time / 60.0
+    # words_per_minute = (word_count / minutes) |> round
+
+
+      word_count = text_input |> String.graphemes() |> Enum.count |> div(5)
+
+      # word_count = String.length(text_input) / 5
+
+      minutes = elapsed_time / 60.0
+      words_per_minute = (word_count / minutes) |> round
+      IO.inspect(words_per_minute)
 
       {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
   end
-    #track number of characters typed
-    #how much time has passed
-    #when (or what time) did the player start what is the start time, what is the current time, and the difference between the two
-    #
-    # string |> String.graphemes() |> Enum.count |> div(5)
 
-    # words_per_minute = String.length(text_input) / 5 |>
+
+
 
 
     ##### Handles button click #######
     ###### restarts timer on click #######
-  # def handle_event("restart", _, socket) do
-  #   if socket.assigns.session_timer <= 0 do
-  #     # IO.inspect({:noreply, assign(socket, css_block: "visible")})
-  #   end
-  #   {:noreply, assign(socket, session_timer: 30, submitted_snippets: 0, text_input: "")}
-  # end
+  def handle_event("restart", _, socket) do
+    if socket.assigns.session_timer <= 0 do
+      # IO.inspect({:noreply, assign(socket, css_block: "visible")})
+    end
+    {:noreply, assign(socket, session_timer: 30, submitted_snippets: 0, text_input: "")}
+  end
 
   ####### Handles timer countdown ########
   def handle_info(:tick, socket) do
@@ -150,4 +153,17 @@ defmodule ElixirWPMWeb.HomeLive do
 #edge cases: function keys or anything not a number, letter, space, or punctuation should be excluded
 #count number of characters typed. divide by 5
 #divide number of mistakes by total of typed characters
-#use Regex to include/exclude characters
+
+
+
+
+
+
+
+ # start = DateTime.now!("Etc/UTC")
+    # finish = DateTime.now!("Etc/UTC")
+    # minutes = DateTime.diff(finish, start) |> div(60)
+    # IO.inspect(minutes)
+
+
+    #jaro distance?
