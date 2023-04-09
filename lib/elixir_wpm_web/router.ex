@@ -1,4 +1,5 @@
 defmodule ElixirWPMWeb.Router do
+  # alias ElixirWpmWeb.LeaderboardLive
   use ElixirWPMWeb, :router
 
   pipeline :browser do
@@ -20,6 +21,7 @@ defmodule ElixirWPMWeb.Router do
     # get "/", PageController, :index
     live "/", HomeLive
     live "/about", AboutLive
+    live "/leaderboard", LeaderboardLive
   end
 
   # Other scopes may use custom stacks.
