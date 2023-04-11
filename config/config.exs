@@ -45,8 +45,10 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-  #Configure Tailwind
-  config :tailwind, version: "3.2.4", default: [
+# Configure Tailwind
+config :tailwind,
+  version: "3.2.4",
+  default: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css

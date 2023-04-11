@@ -5,13 +5,19 @@ defmodule ElixirWPMWeb.HomeLive do
   alias ElixirWPM.Snippets
 
   @default_snippet "Enum.map(element fn elem -> elem + 1 end)"
-
+  @initial_timer 3
   def mount(_params, _sessions, socket) do
     {:ok,
-     assign(socket, css_block: "hidden", session_timer: 60, submitted_snippets: 0, words_per_minute: 0, text_input: "", snippet: @default_snippet)}
-
+     assign(socket,
+       css_block: "hidden",
+       session_timer: @initial_timer,
+       submitted_snippets: 0,
+       words_per_minute: 0,
+       text_input: "",
+       playing: false,
+       snippet: @default_snippet
+     )}
   end
-
 
   def render(assigns) do
     ~H"""
@@ -60,60 +66,52 @@ defmodule ElixirWPMWeb.HomeLive do
     end
   end
 
-
-
-
-
   def handle_event("change", form_data, socket) do
-    if String.length(form_data["textinput"]["name"]) == 1 &&
-         socket.assigns.submitted_snippets == 0 do
-
-      :timer.send_interval(1000, self(), :tick)
-       else
-    end
+    socket =
+      if !socket.assigns.playing do
+        {:ok, timer} = :timer.send_interval(:timer.seconds(1), self(), :tick)
+        assign(socket, timer: timer, playing: true)
+      else
+        socket
+      end
 
     elapsed_time = 60.0
     text_input = form_data["textinput"]["name"] |> IO.inspect()
-    # word_count = text_input / 5
-    # minutes = elapsed_time / 60.0
-    # words_per_minute = (word_count / minutes) |> round
 
+    # word_count = text_input |> String.graphemes() |> Enum.count() |> div(5)
 
-      word_count = text_input |> String.graphemes() |> Enum.count |> div(5)
+    word_count = String.length(text_input) / 5
 
-      # word_count = String.length(text_input) / 5
+    minutes = elapsed_time / 60.0
+    words_per_minute = (word_count / minutes) |> round
+    IO.inspect(words_per_minute)
 
-      minutes = elapsed_time / 60.0
-      words_per_minute = (word_count / minutes) |> round
-      IO.inspect(words_per_minute)
-
-      {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
+    {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
   end
 
-
-
-
-
-    ##### Handles button click #######
-    ###### restarts timer on click #######
+  ##### Handles button click #######
+  ###### restarts timer on click #######
   def handle_event("restart", _, socket) do
     if socket.assigns.session_timer <= 0 do
       # IO.inspect({:noreply, assign(socket, css_block: "visible")})
+      {:noreply,
+       assign(socket, session_timer: @initial_timer, submitted_snippets: 0, text_input: "")}
     end
-    {:noreply, assign(socket, session_timer: 30, submitted_snippets: 0, text_input: "")}
   end
 
-  ####### Handles timer countdown ########
   def handle_info(:tick, socket) do
-    if socket.assigns.session_timer > 0 do
-      {:noreply, assign(socket, session_timer: socket.assigns.session_timer - 1)}
-    else
-      {:noreply, assign(socket, session_timer: socket.assigns.session_timer)}
-    end
+    socket =
+      case socket.assigns.session_timer do
+        0 ->
+          :timer.cancel(socket.assigns.timer)
+          assign(socket, playing: false)
+
+        _ ->
+          assign(socket, session_timer: socket.assigns.session_timer - 1)
+      end
+
+    {:noreply, socket}
   end
-
-
-
 
   def my_table(assigns) do
     ~H"""
@@ -145,25 +143,17 @@ defmodule ElixirWPMWeb.HomeLive do
     </section>
     """
   end
- end
+end
 
-
-#raw words per minute is a calculation of how fast you type with no errors
+# raw words per minute is a calculation of how fast you type with no errors
 # a "word" is any five characters. spaces, numbers, letters and punctuation are all included
-#edge cases: function keys or anything not a number, letter, space, or punctuation should be excluded
-#count number of characters typed. divide by 5
-#divide number of mistakes by total of typed characters
+# edge cases: function keys or anything not a number, letter, space, or punctuation should be excluded
+# count number of characters typed. divide by 5
+# divide number of mistakes by total of typed characters
 
+# start = DateTime.now!("Etc/UTC")
+# finish = DateTime.now!("Etc/UTC")
+# minutes = DateTime.diff(finish, start) |> div(60)
+# IO.inspect(minutes)
 
-
-
-
-
-
- # start = DateTime.now!("Etc/UTC")
-    # finish = DateTime.now!("Etc/UTC")
-    # minutes = DateTime.diff(finish, start) |> div(60)
-    # IO.inspect(minutes)
-
-
-    #jaro distance?
+# jaro distance?
