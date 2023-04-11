@@ -78,8 +78,6 @@ defmodule ElixirWPMWeb.HomeLive do
     elapsed_time = 60.0
     text_input = form_data["textinput"]["name"] |> IO.inspect()
 
-    # word_count = text_input |> String.graphemes() |> Enum.count() |> div(5)
-
     word_count = String.length(text_input) / 5
 
     minutes = elapsed_time / 60.0
@@ -93,7 +91,6 @@ defmodule ElixirWPMWeb.HomeLive do
   ###### restarts timer on click #######
   def handle_event("restart", _, socket) do
     if socket.assigns.session_timer <= 0 do
-      # IO.inspect({:noreply, assign(socket, css_block: "visible")})
       {:noreply,
        assign(socket, session_timer: @initial_timer, submitted_snippets: 0, text_input: "")}
     end
