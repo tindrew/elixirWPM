@@ -6,7 +6,9 @@ defmodule ElixirWPM.Snippets do
     "Map.update(acc, name, ids, fn prev_ids -> prev_ids ++ ids end)",
     "|> Enum.map(fn {color, ids} -> %{name: color, ids: ids} end)",
     "conn |> Plug.Conn.assign(:name, Keyword.get(opts, :name, background_job))",
-    "Enum.map(map, fn {k, v} -> {k, v * 2} end)"
+    "Enum.map(map, fn {k, v} -> {k, v * 2} end)",
+    "list = [1, 2, 3, 4, 5, 6, 7, 8, 9 10]",
+
   ]
   def random() do
     Enum.random(@snippets)

@@ -67,5 +67,27 @@ MVP will be manually tested.
 - Syntax highlighting
 - User signup / login
 - Leaderboards
-- 
 
+
+
+
+
+
+
+
+
+
+#### notes
+
+Database:
+1. need to save scores to database
+2. allow only users to save scores
+3. display scores
+4. update score if current score is higher than previous, otherwise nothing/discard
+5. add to playerscore? 
+- 
+alias ElixirWPM.Leaderboards.PlayerScore
+alias ElixirWPM.Repo
+
+Repo.insert(%PlayerScore{total_score: 44})
+Repo.insert(%PlayerScore{total_score: 44})
