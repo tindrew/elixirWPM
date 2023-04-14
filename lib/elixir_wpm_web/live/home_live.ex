@@ -5,7 +5,7 @@ defmodule ElixirWPMWeb.HomeLive do
   alias ElixirWPM.Snippets
 
   @default_snippet "Enum.map(element fn elem -> elem + 1 end)"
-  @initial_timer 3
+  @initial_timer 20
   def mount(_params, _sessions, socket) do
     {:ok,
      assign(socket,
@@ -15,7 +15,8 @@ defmodule ElixirWPMWeb.HomeLive do
        words_per_minute: 0,
        text_input: "",
        playing: false,
-       snippet: @default_snippet
+       snippet: @default_snippet,
+       total_score: 0
      )}
   end
 
@@ -26,7 +27,7 @@ defmodule ElixirWPMWeb.HomeLive do
     <h3 class="text-indigo-500 text-2xl font-bold">Start the game by typing the snippet!</h3>
 
 
-    <.my_table snippet={@snippet} session_timer={@session_timer} submitted_snippets={@submitted_snippets} words_per_minute={@words_per_minute} />
+    <.my_table snippet={@snippet} session_timer={@session_timer} submitted_snippets={@submitted_snippets} words_per_minute={@words_per_minute} total_score={@total_score}/>
 
     <%= if @session_timer == 0 do %>
       <button  phx-click="restart" type="button" id="start-button" class=" mt-6 py-4 px-6  bg-indigo-600 hover:bg-indigo-700
@@ -57,7 +58,8 @@ defmodule ElixirWPMWeb.HomeLive do
 
       {:noreply,
        assign(socket,
-         submitted_snippets: socket.assigns.submitted_snippets + 1,
+         submitted_snippets: socket.assigns.submitted_snippets,
+         total_score: @total_score,
          snippet: Snippets.random(),
          text_input: ""
        )}
@@ -129,7 +131,9 @@ defmodule ElixirWPMWeb.HomeLive do
           <h2 class="text-xl font-bold"><%= @submitted_snippets * 100 %> </h2>
 
           <br>
-            Highscore goes here
+            Total Score goes here
+            <h2 class="text-xl font-bold"><%= @total_score %> </h2>
+
           </td>
         <td>
           Session Time
