@@ -4,7 +4,7 @@ defmodule ElixirWPMWeb.HomeLive do
   import Phoenix.LiveView.Helpers
   alias ElixirWPM.Snippets
 
-  @default_snippet "Enum.map(element fn elem -> elem + 1 end)"
+  @default_snippet "weee"
   @initial_timer 20
   def mount(_params, _sessions, socket) do
     {:ok,
@@ -54,18 +54,31 @@ defmodule ElixirWPMWeb.HomeLive do
     IO.inspect(text_input)
 
     if text_input == socket.assigns.snippet do
-      IO.inspect("some text")
+      # socket.assigns.submitted_snippets + 1
+      # assigns(socket, total_score = submitted_snippets + socket.assigns.words_per_minute)
+
+      # total_score = socket.assigns.submitted_snippets + socket.assigns.words_per_minute
 
       {:noreply,
        assign(socket,
-         submitted_snippets: socket.assigns.submitted_snippets,
-         total_score: @total_score,
+      #  submitted_snippets: socket.assigns.submitted_snippets,
+      submitted_snippets: snippet_score(socket),
+      #  total_score: socket.assigns.submitted_snippets, + socket.assigns.words_per_minute,
+      total_score: tally_scores(socket),
          snippet: Snippets.random(),
          text_input: ""
        )}
     else
       {:noreply, socket}
     end
+  end
+
+  defp snippet_score(socket) do
+    socket.assigns.submitted_snippets + 1
+  end
+
+  defp tally_scores(socket) do
+    (socket.assigns.submitted_snippets * 100) + socket.assigns.words_per_minute
   end
 
   def handle_event("change", form_data, socket) do
@@ -85,6 +98,7 @@ defmodule ElixirWPMWeb.HomeLive do
     minutes = elapsed_time / 60.0
     words_per_minute = (word_count / minutes) |> round
     IO.inspect(words_per_minute)
+
 
     {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
   end
@@ -128,7 +142,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
 
 
-          <h2 class="text-xl font-bold"><%= @submitted_snippets * 100 %> </h2>
+          <h2 class="text-xl font-bold"><%= @submitted_snippets %> </h2>
 
           <br>
             Total Score goes here
@@ -145,7 +159,6 @@ defmodule ElixirWPMWeb.HomeLive do
     """
   end
 end
-
 # raw words per minute is a calculation of how fast you type with no errors
 # a "word" is any five characters. spaces, numbers, letters and punctuation are all included
 # edge cases: function keys or anything not a number, letter, space, or punctuation should be excluded

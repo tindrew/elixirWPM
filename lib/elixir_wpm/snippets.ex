@@ -1,9 +1,9 @@
 defmodule ElixirWPM.Snippets do
   @snippets [
 
-    "list = [1, 2, 3, 4, 5, 6, 7, 8, 9 10]",
-    "2 3 4 5 6 7 8 9 10",
-    "asdfasdfasdfasdfasdfasdf",
+    "123,123,123,123,123,123,123,123,123,123,123",
+    "123,123,123",
+    "asdf,asdf,asdf,asdf",
 
   ]
   def random() do

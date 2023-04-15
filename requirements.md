@@ -91,3 +91,22 @@ alias ElixirWPM.Repo
 
 Repo.insert(%PlayerScore{total_score: 44})
 Repo.insert(%PlayerScore{total_score: 44})
+
+
+
+def handle_event("change", form_data, socket) do
+  elapsed_time = 60.0
+  text_input = form_data["textinput"]["name"] |> IO.inspect()
+
+  word_count = String.length(text_input) / 5
+
+  minutes = elapsed_time / 60.0
+  words_per_minute = (word_count / minutes) |> round
+  IO.inspect(words_per_minute)
+
+  # Save score to database
+  score = %{words_per_minute: words_per_minute}
+  Repo.insert(:scores, score)
+
+  {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
+end
