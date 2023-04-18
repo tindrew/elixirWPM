@@ -17,7 +17,8 @@ defmodule ElixirWPMWeb.HomeLive do
        text_input: "",
        playing: false,
        snippet: @default_snippet,
-       total_score: 0
+       total_score: 0,
+       elapsed_time: 0 #just added
      )}
   end
 
@@ -51,20 +52,31 @@ defmodule ElixirWPMWeb.HomeLive do
   end
 
   def handle_event("submit", form_data, socket) do
-
     text_input = form_data["textinput"]["name"]
-
-
-
 
     if text_input == socket.assigns.snippet do
       snippet_score = socket.assigns.submitted_snippets + 1
+
+      text_input = form_data["textinput"]["name"]
+
+
+
+
+      words = String.length(text_input) / 5
+      # this needs to be actual elapsed time in order to get a more accurate wpm
+      time_in_seconds = 10
+      words_per_second = words / time_in_seconds
+      wpm = (words_per_second * 60) |> IO.inspect()
+
+      IO.inspect(wpm)
+
 
       {:noreply,
        assign(socket,
          submitted_snippets: snippet_score,
          total_score: snippet_score * 100,
          snippet: Snippets.random(),
+         words_per_minute: wpm,
          text_input: ""
        )}
     else
@@ -72,54 +84,32 @@ defmodule ElixirWPMWeb.HomeLive do
     end
   end
 
-  # def calculate_wpm(words, time_in_seconds) do
-  #   words_per_second = words / time_in_seconds
-  #   wpm = words_per_second * 60
-
-  #   wpm
-  # end
-
-
-
   def handle_event("change", form_data, socket) do
     socket =
       if !socket.assigns.playing do
         {:ok, timer} = :timer.send_interval(:timer.seconds(1), self(), :tick)
         assign(socket, timer: timer, playing: true)
+        #start time = datetime.now(etc)
       else
         socket
       end
-    IO.inspect(form_data)
-    elapsed_time = 60.0
+
     text_input = form_data["textinput"]["name"]
 
-    # word_count = String.length(text_input) / 5
-
-    # minutes = elapsed_time / 60.0
-    # words_per_minute = (word_count / minutes) |> round
-    # IO.inspect(words_per_minute)
-    # text_input = form_data["textinput"]["name"]
-
-    def calculate_wpm(words, time_in_seconds) do
-
-      words_per_second = words / time_in_seconds
 
 
-      words_per_minute = words_per_second * 60
 
+    # words = String.length(text_input) / 5
+    # # this needs to be actual elapsed time in order to get a more accurate wpm
+    # time_in_seconds = 10
+    # words_per_second = words / time_in_seconds
+    # wpm = (words_per_second * 60) |> IO.inspect()
 
-      wpm = round(words_per_minute, 2)
+    # IO.inspect(wpm)
 
-      # return the result
-      wpm
-    end
-
-
-    {:noreply, assign(socket, text_input: text_input, words_per_minute: wpm)}
+    {:noreply, assign(socket, text_input: text_input)}
   end
 
-  ##### Handles button click #######
-  ###### restarts timer on click #######
   def handle_event("restart", _, socket) do
     if socket.assigns.session_timer <= 0 do
       {:noreply,
@@ -140,6 +130,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
     {:noreply, socket}
   end
+
 
   def my_table(assigns) do
     ~H"""
@@ -174,6 +165,8 @@ defmodule ElixirWPMWeb.HomeLive do
     """
   end
 end
+
+# make a elapsed_time field in mount
 
 # raw words per minute is a calculation of how fast you type with no errors
 # a "word" is any five characters. spaces, numbers, letters and punctuation are all included
