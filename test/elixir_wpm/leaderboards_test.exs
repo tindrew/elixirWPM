@@ -35,13 +35,18 @@ defmodule ElixirWPM.LeaderboardsTest do
       player_score = player_score_fixture()
       update_attrs = %{total_score: 43}
 
-      assert {:ok, %PlayerScore{} = player_score} = Leaderboards.update_player_score(player_score, update_attrs)
+      assert {:ok, %PlayerScore{} = player_score} =
+               Leaderboards.update_player_score(player_score, update_attrs)
+
       assert player_score.total_score == 43
     end
 
     test "update_player_score/2 with invalid data returns error changeset" do
       player_score = player_score_fixture()
-      assert {:error, %Ecto.Changeset{}} = Leaderboards.update_player_score(player_score, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Leaderboards.update_player_score(player_score, @invalid_attrs)
+
       assert player_score == Leaderboards.get_player_score!(player_score.id)
     end
 

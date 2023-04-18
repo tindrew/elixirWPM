@@ -1,10 +1,8 @@
 defmodule ElixirWPM.Snippets do
   @snippets [
-
     "123,123,123,123,123,123,123,123,123,123,123",
     "123,123,123",
-    "asdf,asdf,asdf,asdf",
-
+    "asdf,asdf,asdf,asdf"
   ]
   def random() do
     Enum.random(@snippets)
