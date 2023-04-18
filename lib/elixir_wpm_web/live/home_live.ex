@@ -7,6 +7,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
   @default_snippet "weee"
   @initial_timer 20
+
   def mount(_params, _sessions, socket) do
     {:ok,
      assign(socket,
@@ -18,7 +19,9 @@ defmodule ElixirWPMWeb.HomeLive do
        playing: false,
        snippet: @default_snippet,
        total_score: 0,
-       elapsed_time: 0 #just added
+       # just added
+       start_time: 0
+
      )}
   end
 
@@ -57,7 +60,6 @@ defmodule ElixirWPMWeb.HomeLive do
     if text_input == socket.assigns.snippet do
       snippet_score = socket.assigns.submitted_snippets + 1
 
-      text_input = form_data["textinput"]["name"]
 
 
 
@@ -66,9 +68,7 @@ defmodule ElixirWPMWeb.HomeLive do
       # this needs to be actual elapsed time in order to get a more accurate wpm
       time_in_seconds = 10
       words_per_second = words / time_in_seconds
-      wpm = (words_per_second * 60) |> IO.inspect()
-
-      IO.inspect(wpm)
+      wpm = (words_per_second * 60)
 
 
       {:noreply,
@@ -79,35 +79,30 @@ defmodule ElixirWPMWeb.HomeLive do
          words_per_minute: wpm,
          text_input: ""
        )}
+
     else
       {:noreply, socket}
     end
   end
 
   def handle_event("change", form_data, socket) do
+    start = DateTime.utc_now()
     socket =
       if !socket.assigns.playing do
+
         {:ok, timer} = :timer.send_interval(:timer.seconds(1), self(), :tick)
-        assign(socket, timer: timer, playing: true)
-        #start time = datetime.now(etc)
+        assign(socket, timer: timer, playing: true, start_time: start)
       else
         socket
       end
+      IO.inspect(socket.assigns.start_time, label: "Start!")
 
     text_input = form_data["textinput"]["name"]
 
 
 
-
-    # words = String.length(text_input) / 5
-    # # this needs to be actual elapsed time in order to get a more accurate wpm
-    # time_in_seconds = 10
-    # words_per_second = words / time_in_seconds
-    # wpm = (words_per_second * 60) |> IO.inspect()
-
-    # IO.inspect(wpm)
-
     {:noreply, assign(socket, text_input: text_input)}
+
   end
 
   def handle_event("restart", _, socket) do
@@ -130,7 +125,6 @@ defmodule ElixirWPMWeb.HomeLive do
 
     {:noreply, socket}
   end
-
 
   def my_table(assigns) do
     ~H"""
