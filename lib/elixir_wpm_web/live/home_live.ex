@@ -20,8 +20,8 @@ defmodule ElixirWPMWeb.HomeLive do
        snippet: @default_snippet,
        total_score: 0,
        # just added
-       start_time: 0
-
+       start_time: 0,
+       finish_time: 0
      )}
   end
 
@@ -56,20 +56,16 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def handle_event("submit", form_data, socket) do
     text_input = form_data["textinput"]["name"]
+    finish = DateTime.utc_now()
 
     if text_input == socket.assigns.snippet do
       snippet_score = socket.assigns.submitted_snippets + 1
 
-
-
-
-
       words = String.length(text_input) / 5
       # this needs to be actual elapsed time in order to get a more accurate wpm
-      time_in_seconds = 10
+      time_in_seconds = DateTime.diff(finish, socket.assigns.start_time)
       words_per_second = words / time_in_seconds
-      wpm = (words_per_second * 60)
-
+      wpm = words_per_second * 60
 
       {:noreply,
        assign(socket,
@@ -77,9 +73,10 @@ defmodule ElixirWPMWeb.HomeLive do
          total_score: snippet_score * 100,
          snippet: Snippets.random(),
          words_per_minute: wpm,
-         text_input: ""
+         text_input: "",
+         finish_time: finish
        )}
-
+      |> IO.inspect()
     else
       {:noreply, socket}
     end
@@ -87,22 +84,20 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def handle_event("change", form_data, socket) do
     start = DateTime.utc_now()
+
     socket =
       if !socket.assigns.playing do
-
         {:ok, timer} = :timer.send_interval(:timer.seconds(1), self(), :tick)
         assign(socket, timer: timer, playing: true, start_time: start)
       else
         socket
       end
-      IO.inspect(socket.assigns.start_time, label: "Start!")
+
+    IO.inspect(socket.assigns.start_time, label: "Start!")
 
     text_input = form_data["textinput"]["name"]
 
-
-
     {:noreply, assign(socket, text_input: text_input)}
-
   end
 
   def handle_event("restart", _, socket) do
@@ -139,8 +134,6 @@ defmodule ElixirWPMWeb.HomeLive do
         </td>
         <td class="flex flex-col justify-center items-center">
           <h3 class="text-4xl font-bold"><%= @snippet %></h3>
-
-
 
           <h2 class="text-xl font-bold"><%= @submitted_snippets %> </h2>
 
