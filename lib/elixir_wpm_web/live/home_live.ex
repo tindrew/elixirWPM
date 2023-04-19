@@ -21,7 +21,7 @@ defmodule ElixirWPMWeb.HomeLive do
        total_score: 0,
        # just added
        start_time: 0,
-       finish_time: 0
+
      )}
   end
 
@@ -111,8 +111,12 @@ defmodule ElixirWPMWeb.HomeLive do
     socket =
       case socket.assigns.session_timer do
         0 ->
+
+          final_finish = DateTime.utc_now()
+          final_wpm = DateTime.diff(final_finish, socket.assigns.start_time)
+          IO.inspect(final_wpm, label: "THE FINAL ONE!")
           :timer.cancel(socket.assigns.timer)
-          assign(socket, playing: false)
+          assign(socket, playing: false, words_per_minute: final_wpm)
 
         _ ->
           assign(socket, session_timer: socket.assigns.session_timer - 1)
@@ -167,3 +171,7 @@ end
 # IO.inspect(minutes)
 
 # jaro distance?
+
+# final_wpm: take another wpm count starting from initial start to when the
+# session timer ends.
+#

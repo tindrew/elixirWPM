@@ -110,3 +110,14 @@ def handle_event("change", form_data, socket) do
 
   {:noreply, assign(socket, text_input: text_input, words_per_minute: words_per_minute)}
 end
+
+
+
+currently it looks like my wpm is getting submitted every single snippet. Is that what I want to happen?
+ Honestly I have no idea.
+
+ yes I do
+
+ so I want total score to be updated during the game. 
+ - Every time I submit a snippet I want total score updated to reflect those scores. 
+ - At the end of the session I want words per minute added to it
