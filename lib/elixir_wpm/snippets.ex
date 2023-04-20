@@ -1,6 +1,6 @@
 defmodule ElixirWPM.Snippets do
   @snippets [
-    "123,123,123,123,123,123,123,123,123,123,123",
+    "123",
     "123,123,123",
     "asdf,asdf,asdf,asdf"
   ]

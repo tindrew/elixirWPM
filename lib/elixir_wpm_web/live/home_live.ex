@@ -5,13 +5,12 @@ defmodule ElixirWPMWeb.HomeLive do
 
   alias ElixirWPM.Snippets
 
-  @default_snippet "weee"
+  @default_snippet "123"
   @initial_timer 20
 
   def mount(_params, _sessions, socket) do
     {:ok,
      assign(socket,
-       css_block: "hidden",
        session_timer: @initial_timer,
        submitted_snippets: 0,
        words_per_minute: 0,
@@ -19,9 +18,8 @@ defmodule ElixirWPMWeb.HomeLive do
        playing: false,
        snippet: @default_snippet,
        total_score: 0,
+       total_word_count: 0
        # just added
-       start_time: 0,
-
      )}
   end
 
@@ -54,21 +52,36 @@ defmodule ElixirWPMWeb.HomeLive do
     """
   end
 
+  # def calculate_wpm(start, finish) do
+  #   text_input = form_data["textinput"]["name"]
+  #   words = String.length(text_input) / 5
+  #   time_in_seconds = DateTime.diff(finish, start)
+  #   words_per_second = words / time_in_seconds
+  #   wpm = words_per_second * 60
+  #   wpm
+  # end
+
   def handle_event("submit", form_data, socket) do
     text_input = form_data["textinput"]["name"]
     finish = DateTime.utc_now()
+    IO.inspect(finish, label: "FINISH")
+    start = socket.assigns.start_time
+    IO.inspect(start, label: "start")
 
     if text_input == socket.assigns.snippet do
       snippet_score = socket.assigns.submitted_snippets + 1
 
       words = String.length(text_input) / 5
-      # this needs to be actual elapsed time in order to get a more accurate wpm
+      total_word_count = words + socket.assigns.total_word_count
       time_in_seconds = DateTime.diff(finish, socket.assigns.start_time)
-      words_per_second = words / time_in_seconds
-      wpm = words_per_second * 60
+      IO.inspect(time_in_seconds, label: "Time In Seconds")
+      # why do I keep getting a random crash on this line? // Bad Arith exp
+      words_per_second = total_word_count / time_in_seconds
+      wpm = (words_per_second * 60) |> round()
 
       {:noreply,
        assign(socket,
+         total_word_count: total_word_count,
          submitted_snippets: snippet_score,
          total_score: snippet_score * 100,
          snippet: Snippets.random(),
@@ -103,7 +116,12 @@ defmodule ElixirWPMWeb.HomeLive do
   def handle_event("restart", _, socket) do
     if socket.assigns.session_timer <= 0 do
       {:noreply,
-       assign(socket, session_timer: @initial_timer, submitted_snippets: 0, text_input: "")}
+       assign(socket,
+         session_timer: @initial_timer,
+         submitted_snippets: 0,
+         text_input: "",
+         total_word_count: 0
+       )}
     end
   end
 
@@ -111,12 +129,12 @@ defmodule ElixirWPMWeb.HomeLive do
     socket =
       case socket.assigns.session_timer do
         0 ->
-
           final_finish = DateTime.utc_now()
-          final_wpm = DateTime.diff(final_finish, socket.assigns.start_time)
-          IO.inspect(final_wpm, label: "THE FINAL ONE!")
+          time_in_seconds = DateTime.diff(final_finish, socket.assigns.start_time)
+          words_per_second = socket.assigns.total_word_count / time_in_seconds
+          wpm = words_per_second * 60 |> round()
           :timer.cancel(socket.assigns.timer)
-          assign(socket, playing: false, words_per_minute: final_wpm)
+          assign(socket, playing: false, words_per_minute: wpm)
 
         _ ->
           assign(socket, session_timer: socket.assigns.session_timer - 1)
