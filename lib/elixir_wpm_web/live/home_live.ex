@@ -4,6 +4,7 @@ defmodule ElixirWPMWeb.HomeLive do
   import Phoenix.LiveView.Helpers
 
   alias ElixirWPM.Snippets
+  alias ElixirWPM.Leaderboards
 
   @default_snippet "123"
   @initial_timer 20
@@ -19,7 +20,6 @@ defmodule ElixirWPMWeb.HomeLive do
        snippet: @default_snippet,
        total_score: 0,
        total_word_count: 0
-       # just added
      )}
   end
 
@@ -67,7 +67,7 @@ defmodule ElixirWPMWeb.HomeLive do
        assign(socket,
          total_word_count: total_word_count,
          submitted_snippets: snippet_score,
-         total_score: snippet_score * 100,
+         total_score: snippet_score * 1024 + wpm,
          snippet: Snippets.random(),
          words_per_minute: wpm,
          text_input: "",
@@ -114,7 +114,14 @@ defmodule ElixirWPMWeb.HomeLive do
           total_word_count = socket.assigns.total_word_count
 
           wpm = calculate_wpm(total_word_count, finish, start)
+
+
           :timer.cancel(socket.assigns.timer)
+
+
+
+          IO.inspect(socket.assigns.total_score)
+          Leaderboards.create_player_score(%{total_score: socket.assigns.total_score})
           assign(socket, playing: false, words_per_minute: wpm)
 
         _ ->
@@ -128,7 +135,7 @@ defmodule ElixirWPMWeb.HomeLive do
     time_in_milliseconds = DateTime.diff(finish, start_time, :millisecond)
     time_in_seconds = time_in_milliseconds * 0.001
     words_per_second = total_word_count / time_in_seconds
-    (words_per_second * 60) |> Float.round(1)
+    (words_per_second * 60) |> round()
   end
 
   def my_table(assigns) do
@@ -163,21 +170,7 @@ defmodule ElixirWPMWeb.HomeLive do
   end
 end
 
-# make a elapsed_time field in mount
-
-# raw words per minute is a calculation of how fast you type with no errors
-# a "word" is any five characters. spaces, numbers, letters and punctuation are all included
-# edge cases: function keys or anything not a number, letter, space, or punctuation should be excluded
-# count number of characters typed. divide by 5
-# divide number of mistakes by total of typed characters
-
-# start = DateTime.now!("Etc/UTC")
-# finish = DateTime.now!("Etc/UTC")
-# minutes = DateTime.diff(finish, start) |> div(60)
-# IO.inspect(minutes)
-
-# jaro distance?
-
-# final_wpm: take another wpm count starting from initial start to when the
-# session timer ends.
-#
+#at end of count down:
+#if user is_logged_in do
+  #Repo.insert score into database
+  #display score on leaderboard page

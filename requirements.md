@@ -121,3 +121,21 @@ currently it looks like my wpm is getting submitted every single snippet. Is tha
  so I want total score to be updated during the game. 
  - Every time I submit a snippet I want total score updated to reflect those scores. 
  - At the end of the session I want words per minute added to it
+
+make a elapsed_time field in mount
+
+# raw words per minute is a calculation of how fast you type with no errors
+# a "word" is any five characters. spaces, numbers, letters and punctuation are all included
+# edge cases: function keys or anything not a number, letter, space, or punctuation should be excluded
+# count number of characters typed. divide by 5
+# divide number of mistakes by total of typed characters
+
+# start = DateTime.now!("Etc/UTC")
+# finish = DateTime.now!("Etc/UTC")
+# minutes = DateTime.diff(finish, start) |> div(60)
+# IO.inspect(minutes)
+
+# jaro distance?
+
+# final_wpm: take another wpm count starting from initial start to when the
+# session timer ends.
