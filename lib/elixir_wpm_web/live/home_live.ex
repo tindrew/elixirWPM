@@ -52,25 +52,16 @@ defmodule ElixirWPMWeb.HomeLive do
     """
   end
 
-  def calculate_wpm(text_input, total_word_count, finish, start_time) do
-    words = String.length(text_input) / 5
-    total_word_count = words + total_word_count
-    time_in_milliseconds = DateTime.diff(finish, start_time, :millisecond)
-    time_in_seconds = time_in_milliseconds * 0.001
-    words_per_second = total_word_count / time_in_seconds
-    (words_per_second * 60) |> Float.round(1)
-  end
-
   def handle_event("submit", form_data, socket) do
     text_input = form_data["textinput"]["name"]
     finish = DateTime.utc_now()
     start = socket.assigns.start_time
-    I
+
     if text_input == socket.assigns.snippet do
       snippet_score = socket.assigns.submitted_snippets + 1
       words = String.length(text_input) / 5
       total_word_count = words + socket.assigns.total_word_count
-      wpm = calculate_wpm(text_input, socket.assigns.total_word_count, finish, start)
+      wpm = calculate_wpm(total_word_count, finish, start)
 
       {:noreply,
        assign(socket,
@@ -98,10 +89,7 @@ defmodule ElixirWPMWeb.HomeLive do
         socket
       end
 
-    IO.inspect(socket.assigns.start_time, label: "Start!")
-
     text_input = form_data["textinput"]["name"]
-
     {:noreply, assign(socket, text_input: text_input)}
   end
 
@@ -117,20 +105,15 @@ defmodule ElixirWPMWeb.HomeLive do
     end
   end
 
-
-  def calculate_wpm() do
-
-  end
-
-
   def handle_info(:tick, socket) do
     socket =
       case socket.assigns.session_timer do
         0 ->
-          final_finish = DateTime.utc_now()
-          time_in_seconds = DateTime.diff(final_finish, socket.assigns.start_time)
-          words_per_second = socket.assigns.total_word_count / time_in_seconds
-          wpm = (words_per_second * 60) |> round()
+          start = socket.assigns.start_time
+          finish = DateTime.utc_now()
+          total_word_count = socket.assigns.total_word_count
+
+          wpm = calculate_wpm(total_word_count, finish, start)
           :timer.cancel(socket.assigns.timer)
           assign(socket, playing: false, words_per_minute: wpm)
 
@@ -139,6 +122,13 @@ defmodule ElixirWPMWeb.HomeLive do
       end
 
     {:noreply, socket}
+  end
+
+  defp calculate_wpm(total_word_count, finish, start_time) do
+    time_in_milliseconds = DateTime.diff(finish, start_time, :millisecond)
+    time_in_seconds = time_in_milliseconds * 0.001
+    words_per_second = total_word_count / time_in_seconds
+    (words_per_second * 60) |> Float.round(1)
   end
 
   def my_table(assigns) do
