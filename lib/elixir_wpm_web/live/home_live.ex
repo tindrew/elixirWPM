@@ -5,11 +5,14 @@ defmodule ElixirWPMWeb.HomeLive do
 
   alias ElixirWPM.Snippets
   alias ElixirWPM.Leaderboards
+  import ElixirWPM.Accounts
 
   @default_snippet "123"
   @initial_timer 20
 
-  def mount(_params, _sessions, socket) do
+  def mount(_params, session, socket) do
+
+    IO.inspect(session)
     {:ok,
      assign(socket,
        session_timer: @initial_timer,
@@ -19,7 +22,8 @@ defmodule ElixirWPMWeb.HomeLive do
        playing: false,
        snippet: @default_snippet,
        total_score: 0,
-       total_word_count: 0
+       total_word_count: 0,
+       player_id: get_user_by_session_token(session["user_token"])
      )}
   end
 
@@ -44,7 +48,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
       <.form let={f} phx-submit="submit"  phx-change="change" for={:textinput} autocomplete="off">
       <%= text_input f, :name,  value: @text_input, class: " rounded-lg border-transparent flex-1
-       appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700
+       appearance-none border border-gray-300 w-full py-2 px-4 bg-white te player_id: user.idxt-gray-700
         placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"%>
     </.form>
     <% end %>
@@ -118,7 +122,7 @@ defmodule ElixirWPMWeb.HomeLive do
           :timer.cancel(socket.assigns.timer)
 
           IO.inspect(socket.assigns.total_score)
-          IO.inspect(Leaderboards.create_player_score(%{total_score: socket.assigns.total_score}))
+          IO.inspect(Leaderboards.create_player_score(%{total_score: socket.assigns.total_score, player_id: socket.assigns.player_id}))
           assign(socket, playing: false, words_per_minute: wpm)
 
         _ ->

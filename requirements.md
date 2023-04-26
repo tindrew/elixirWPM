@@ -161,3 +161,14 @@ select * FROM player_scores;
 observe /what is it telling you, use things like IO inspect, try to understand what is happening
 hypothesis "what did I observe?"
 verify the hypothesis: I.e. run a test. physical test, or write a test, etc etc
+
+
+
+
+
+
+
+
+
+muscle memory - emphasize that this app is a method for better familiarize yourself with the act 
+of writing elixir, the words per minute aspect is more for the fun gaming aspect.

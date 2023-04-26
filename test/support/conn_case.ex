@@ -23,6 +23,7 @@ defmodule ElixirWPMWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import ElixirWPMWeb.ConnCase
+      import Phoenix.LiveViewTest
 
       alias ElixirWPMWeb.Router.Helpers, as: Routes
 
