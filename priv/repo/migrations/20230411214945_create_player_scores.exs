@@ -3,8 +3,8 @@ defmodule ElixirWPM.Repo.Migrations.CreatePlayerScores do
 
   def change do
     create table(:player_scores) do
-      add :total_score, :integer
-      add :player_id, references(:users, on_delete: :nothing)
+      add :total_score, :integer, null: false
+      add :player_id, references(:users, on_delete: :delete_all), null: false
 
       timestamps()
     end

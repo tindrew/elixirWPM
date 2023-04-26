@@ -115,13 +115,10 @@ defmodule ElixirWPMWeb.HomeLive do
 
           wpm = calculate_wpm(total_word_count, finish, start)
 
-
           :timer.cancel(socket.assigns.timer)
 
-
-
           IO.inspect(socket.assigns.total_score)
-          Leaderboards.create_player_score(%{total_score: socket.assigns.total_score})
+          IO.inspect(Leaderboards.create_player_score(%{total_score: socket.assigns.total_score}))
           assign(socket, playing: false, words_per_minute: wpm)
 
         _ ->
@@ -144,10 +141,10 @@ defmodule ElixirWPMWeb.HomeLive do
     <table >
       <tr>
         <td>
-          Current WPM goes here
+          Current WPM
           <h2><%= @words_per_minute %></h2>
           <br>
-          Score History goes here
+          Score History
         </td>
         <td class="flex flex-col justify-center items-center">
           <h3 class="text-4xl font-bold"><%= @snippet %></h3>
@@ -155,7 +152,7 @@ defmodule ElixirWPMWeb.HomeLive do
           <h2 class="text-xl font-bold"><%= @submitted_snippets %> </h2>
 
           <br>
-            Total Score goes here
+            Total Score
             <h2 class="text-xl font-bold"><%= @total_score %> </h2>
 
           </td>
@@ -169,8 +166,3 @@ defmodule ElixirWPMWeb.HomeLive do
     """
   end
 end
-
-#at end of count down:
-#if user is_logged_in do
-  #Repo.insert score into database
-  #display score on leaderboard page

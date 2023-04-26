@@ -139,3 +139,25 @@ make a elapsed_time field in mount
 
 # final_wpm: take another wpm count starting from initial start to when the
 # session timer ends.
+
+
+
+
+\c name of table
+\d
+\d+
+\d+ player_scores
+or \d player_scores
+select total_score FROM player_scores;
+select * FROM player_scores;
+
+
+# score = %{total_score: socket.assigns.total_score}
+          # Repo.insert(:scores, score)
+
+          # Leaderboards.create_player_score(%{total_score: socket.assigns.total_score})
+          # assign(socket, playing: false, words_per_minute: wpm)
+
+observe /what is it telling you, use things like IO inspect, try to understand what is happening
+hypothesis "what did I observe?"
+verify the hypothesis: I.e. run a test. physical test, or write a test, etc etc

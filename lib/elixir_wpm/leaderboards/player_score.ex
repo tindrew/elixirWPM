@@ -12,7 +12,8 @@ defmodule ElixirWPM.Leaderboards.PlayerScore do
   @doc false
   def changeset(player_score, attrs) do
     player_score
-    |> cast(attrs, [:total_score])
-    |> validate_required([:total_score])
+    |> cast(attrs, [:total_score, :player_id])
+    |> validate_required([:total_score, :player_id])
+    |> foreign_key_constraint(:player_id)
   end
 end
