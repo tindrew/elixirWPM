@@ -12,7 +12,8 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def mount(_params, session, socket) do
 
-    IO.inspect(session)
+
+
     {:ok,
      assign(socket,
        session_timer: @initial_timer,
@@ -23,7 +24,7 @@ defmodule ElixirWPMWeb.HomeLive do
        snippet: @default_snippet,
        total_score: 0,
        total_word_count: 0,
-       player_id: get_user_by_session_token(session["user_token"])
+       player_id: get_user_by_session_token(session["user_token"]) |> IO.inspect()
      )}
   end
 
@@ -121,8 +122,9 @@ defmodule ElixirWPMWeb.HomeLive do
 
           :timer.cancel(socket.assigns.timer)
 
-          IO.inspect(socket.assigns.total_score)
-          IO.inspect(Leaderboards.create_player_score(%{total_score: socket.assigns.total_score, player_id: socket.assigns.player_id}))
+          # IO.inspect(socket.assigns.total_score)
+          Leaderboards.create_player_score(%{total_score: socket.assigns.total_score, player_id: socket.assigns.player_id.id})
+
           assign(socket, playing: false, words_per_minute: wpm)
 
         _ ->
