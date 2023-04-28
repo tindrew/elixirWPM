@@ -11,8 +11,6 @@ defmodule ElixirWPMWeb.HomeLive do
   @initial_timer 20
 
   def mount(_params, session, socket) do
-
-
     player_id = if session["user_token"], do: get_user_by_session_token(session["user_token"]).id
 
     {:ok,
@@ -28,7 +26,7 @@ defmodule ElixirWPMWeb.HomeLive do
        player_id: player_id
      )}
   end
-  # I want the player to be able to play the game without logging in. login = save the score
+
   def render(assigns) do
     ~H"""
     <section class="flex flex-col bg-red-400 h-screen w-screen justify-center items-center">
@@ -112,7 +110,6 @@ defmodule ElixirWPMWeb.HomeLive do
   end
 
   def handle_info(:tick, socket) do
-
     socket =
       case socket.assigns.session_timer do
         0 ->
@@ -124,15 +121,12 @@ defmodule ElixirWPMWeb.HomeLive do
 
           :timer.cancel(socket.assigns.timer)
 
-          # IO.inspect(socket.assigns.total_score)
-
-          case socket.assigns.player_id do
-            nil ->
-               false
-
-            true ->
-              Leaderboards.create_player_score(%{total_score: socket.assigns.total_score, player_id: socket.assigns.player_id})
-            end
+          if socket.assigns.player_id do
+            Leaderboards.create_player_score(%{
+              total_score: socket.assigns.total_score,
+              player_id: socket.assigns.player_id
+            })
+          end
 
           assign(socket, playing: false, words_per_minute: wpm)
 
