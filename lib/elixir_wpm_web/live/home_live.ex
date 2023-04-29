@@ -30,8 +30,7 @@ defmodule ElixirWPMWeb.HomeLive do
   def render(assigns) do
     ~H"""
     <section class="flex flex-col bg-red-400 h-screen w-screen justify-center items-center">
-    <h2 class="text-3xl font-bold">Welcome to ElixirWPM</h2>
-    <h3 class="text-indigo-500 text-2xl font-bold">Start the game by typing the snippet!</h3>
+    <h2 class="text-3xl intro_text py-8"> Type a snippet.</h2>
 
 
     <.my_table snippet={@snippet} session_timer={@session_timer} submitted_snippets={@submitted_snippets} words_per_minute={@words_per_minute} total_score={@total_score}/>
@@ -151,23 +150,23 @@ defmodule ElixirWPMWeb.HomeLive do
       <tr>
         <td>
           Current WPM
-          <h2><%= @words_per_minute %></h2>
+          <h2 class="text-xl font-bold bg-red-500"><%= @words_per_minute %></h2>
           <br>
           Score History
         </td>
-        <td class="flex flex-col justify-center items-center">
-          <h3 class="text-4xl font-bold"><%= @snippet %></h3>
+        <td class="flex flex-col justify-center items-center px-20 bg-slate-700">
+          <h3 class="text-4xl font-bold bg-red-500"><%= @snippet %></h3>
 
-          <h2 class="text-xl font-bold"><%= @submitted_snippets %> </h2>
+          <h2 class="text-xl font-bold bg-red-500"><%= @submitted_snippets %> </h2>
 
           <br>
             Total Score
-            <h2 class="text-xl font-bold"><%= @total_score %> </h2>
+            <h2 class="text-xl font-bold bg-red-500"><%= @total_score %> </h2>
 
           </td>
         <td>
           Session Time
-          <h2 class="text-xl font-bold"><%= @session_timer %> </h2>
+          <h2 class="text-xl font-bold bg-red-500"><%= @session_timer %> </h2>
         </td>
       </tr>
     </table>

@@ -8,6 +8,37 @@
   display: none;
 } */
 
+@font-face {
+  font-family: 'Monoid-Regular';
+  src: url('../fonts/Monoid-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Monoid-Bold';
+  src: url('../fonts/Monoid-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Monoid-Italic';
+  src: url('../fonts/Monoid-Italic.ttf');
+}
+
+@font-face {
+  font-family: 'Monoid-Retina';
+  src: url('../fonts/Monoid-Retina.ttf');
+}
+
+
+.test_class {
+  font-size:xx-large;
+  color: rgb(192, 192, 192);
+  font-family: 'Monoid-Bold', sans-serif;
+}
+
+.intro_text {
+  font-family: 'Monoid-Bold', sans-serif;
+}
+
 /* Alerts and form errors used by phx.new */
 .alert {
   padding: 15px;

@@ -10,11 +10,14 @@
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
   <body>
-    <nav class="flex bg-indigo-300 justify-center py-2 ">  
-        <Components.link href="/">Home</Components.link>
-        <Components.link href="/about">About</Components.link>
-        <Components.link href="/leaderboard">Leader Board</Components.link>
-        <Components.link href="/log-in">Log In</Components.link>
+
+  
+
+    <nav class="flex bg-gray-500 justify-center py-2 ">  
+        <Components.link href="/">home</Components.link>
+        <Components.link href="/about">about</Components.link>
+        <Components.link href="/leaderboard">leader board</Components.link>
+        <Components.link href="/log-in">log in</Components.link>
       <%= render "_user_menu.html", assigns %>
     </nav>
     <%= @inner_content %> 
