@@ -7,7 +7,7 @@ defmodule ElixirWPMWeb.HomeLive do
   alias ElixirWPM.Leaderboards
   import ElixirWPM.Accounts
 
-  @default_snippet "123"
+  @default_snippet "my_variable = [360, 420]"
   @initial_timer 3
 
   def mount(_params, session, socket) do
@@ -146,47 +146,19 @@ defmodule ElixirWPMWeb.HomeLive do
     ~H"""
     <section class="flex grid grid-cols-3 gap-10 py-10 w-3/6 my-8">
       <div class="font-monoid w-36 h-36 rounded-full bg-slate-700 flex flex-col items-center justify-center">
-      <h3 class="text-khaki-500">WPM</h3>
-      <h2 class="text-khaki-500 text-xl font-monoid-bold"><%= @words_per_minute %></h2>
+        <h3 class="text-khaki-500">WPM</h3>
+        <h2 class="text-khaki-500 font-monoid-bold text-3xl"><%= @words_per_minute %></h2>
       </div>
-      <div class="font-monoid bg-red-500 flex flex-col items-center justify-center">
-      <h3>Snippets</h3>
-      <h2 class="text-xl font-bold bg-red-500"><%= @submitted_snippets %> </h2>
+      <div class="font-monoid flex flex-col items-center justify-center">
+      <%!-- <h3>Snippets</h3>
+      <h2 class="text-xl font-bold bg-red-500"><%= @submitted_snippets %> </h2> --%>
+        <h3 class="text-slate-gray font-monoid-bold text-xl mb-3">Total Score</h3>
+        <h2 class="text-6xl font-monoid-bold score-text justify-center items-center"><%= @total_score %> </h2>
       </div>
       <div class="text-khaki-500 font-monoid w-36 h-36 rounded-full bg-slate-700 flex flex-col items-center justify-center ml-auto">
-      <h3>Session Time</h3>
-      <h2 class="font-monoid-bold text-xl"><%= @session_timer %> </h2>
+        <h3>Session Time</h3>
+        <h2 class=" font-monoid-bold text-3xl"><%= @session_timer %> </h2>
       </div>
-
-
-    <%!-- <table class="inline-block justify-center items-center">
-    <thead>
-        <tr>
-          <th class="px-20 py-6">Current WPM</th>
-          <th class="px-20 py-6">snippets</th>
-          <th class="px-20 py-6">Session Time</th>
-        </tr>
-      </thead>
-      <tbody class="justify-center items-center">
-        <div class=" bg-red-700">
-        <td class="px-20 py-4 ">
-          <h2 class="text-xl font-bold "><%= @words_per_minute %></h2>
-        </td>
-        </div>
-        <td class="flex flex-col justify-center items-center px-20 bg-slate-700">
-          <h2 class="text-xl font-bold bg-red-500"><%= @submitted_snippets %> </h2>
-        </td>
-        <td class="flex flex-col justify-center items-center px-20 bg-slate-700">
-          <h3 class="font-bold">Total Score</h3>
-          <h2 class="text-xl font-bold bg-red-500 justify-center items-center"><%= @total_score %> </h2>
-        </td>
-        <td class="px-20 py-4">
-          <h2 class="text-xl font-bold bg-red-500"><%= @session_timer %> </h2>
-        </td>
-        <td>
-        </td>
-      </tbody>
-    </table> --%>
     </section>
     """
   end

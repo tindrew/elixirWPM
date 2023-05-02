@@ -141,9 +141,9 @@ make a elapsed_time field in mount
 # session timer ends.
 
 
-
-
-\c name of table
+psql postgres #gets you into postgres
+\l lists databases
+\c name_of_table
 \d
 \d+
 \d+ player_scores

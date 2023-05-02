@@ -42,6 +42,13 @@
   -webkit-text-stroke-width: 1.70px; 
 }
 
+.score-text {
+  color: #c81d1d;
+  -webkit-text-fill-color: #c81d1d;
+  -webkit-text-stroke-color: #202C39;
+  -webkit-text-stroke-width: 1.70px; 
+}
+
 .intro_text {
   font-family: 'Monoid-Bold', sans-serif;
 }
