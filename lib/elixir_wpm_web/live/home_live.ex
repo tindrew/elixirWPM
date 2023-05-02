@@ -8,7 +8,7 @@ defmodule ElixirWPMWeb.HomeLive do
   import ElixirWPM.Accounts
 
   @default_snippet "123"
-  @initial_timer 20
+  @initial_timer 3
 
   def mount(_params, session, socket) do
     player_id = if session["user_token"], do: get_user_by_session_token(session["user_token"]).id
@@ -29,16 +29,14 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def render(assigns) do
     ~H"""
-    <section class="flex flex-col bg-red-400 h-screen w-screen justify-center items-center">
-    <h2 class="text-3xl intro_text py-8"> Type a snippet.</h2>
+    <section class="flex flex-col bg_green_pea_300 h-screen w-screen justify-center items-center">
+    <h2 class="text-3xl intro_text py-8 px-8 text-slate-gray "> Type a snippet.</h2>
+    <h3 class="text-4xl font-monoid-bold snippet_text py-4 "><%= @snippet %></h3>
 
-
-    <.my_table snippet={@snippet} session_timer={@session_timer} submitted_snippets={@submitted_snippets} words_per_minute={@words_per_minute} total_score={@total_score}/>
 
     <%= if @session_timer == 0 do %>
-      <button  phx-click="restart" type="button" id="start-button" class=" mt-6 py-4 px-6  bg-indigo-600 hover:bg-indigo-700
-              focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200
-              text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg {{css_block}}"
+      <button  phx-click="restart" type="button" id="start-button" class=" mt-6 py-4 px-6  bg-slate-700 hover:bg-slate-500
+               text-white transition ease-in duration-200 text-center text-base font-monoid-bold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-bl-lg rounded-tr-lg {{css_block}}"
                                   >
         Play again!
       </button>
@@ -46,11 +44,12 @@ defmodule ElixirWPMWeb.HomeLive do
       <% else %>
 
       <.form let={f} phx-submit="submit"  phx-change="change" for={:textinput} autocomplete="off">
-      <%= text_input f, :name,  value: @text_input, class: " rounded-lg border-transparent flex-1
-       appearance-none border border-gray-300 w-full py-2 px-4 bg-white te player_id: user.idxt-gray-700
-        placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"%>
+      <%= text_input f, :name,  value: @text_input, class: "flex w-full border-transparent
+       appearance-none border border-gray-300 py-2 px-4 placeholder-gray-400 text-base focus:outline-none focus:ring-amber-600 focus:border-transparent"%>
     </.form>
     <% end %>
+    <.my_table snippet={@snippet} session_timer={@session_timer} submitted_snippets={@submitted_snippets} words_per_minute={@words_per_minute} total_score={@total_score}/>
+
     </section>
     """
   end
@@ -145,31 +144,49 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def my_table(assigns) do
     ~H"""
-    <section >
-    <table >
-      <tr>
-        <td>
-          Current WPM
-          <h2 class="text-xl font-bold bg-red-500"><%= @words_per_minute %></h2>
-          <br>
-          Score History
+    <section class="flex grid grid-cols-3 gap-10 py-10 w-3/6 my-8">
+      <div class="font-monoid w-36 h-36 rounded-full bg-slate-700 flex flex-col items-center justify-center">
+      <h3 class="text-khaki-500">WPM</h3>
+      <h2 class="text-khaki-500 text-xl font-monoid-bold"><%= @words_per_minute %></h2>
+      </div>
+      <div class="font-monoid bg-red-500 flex flex-col items-center justify-center">
+      <h3>Snippets</h3>
+      <h2 class="text-xl font-bold bg-red-500"><%= @submitted_snippets %> </h2>
+      </div>
+      <div class="text-khaki-500 font-monoid w-36 h-36 rounded-full bg-slate-700 flex flex-col items-center justify-center ml-auto">
+      <h3>Session Time</h3>
+      <h2 class="font-monoid-bold text-xl"><%= @session_timer %> </h2>
+      </div>
+
+
+    <%!-- <table class="inline-block justify-center items-center">
+    <thead>
+        <tr>
+          <th class="px-20 py-6">Current WPM</th>
+          <th class="px-20 py-6">snippets</th>
+          <th class="px-20 py-6">Session Time</th>
+        </tr>
+      </thead>
+      <tbody class="justify-center items-center">
+        <div class=" bg-red-700">
+        <td class="px-20 py-4 ">
+          <h2 class="text-xl font-bold "><%= @words_per_minute %></h2>
+        </td>
+        </div>
+        <td class="flex flex-col justify-center items-center px-20 bg-slate-700">
+          <h2 class="text-xl font-bold bg-red-500"><%= @submitted_snippets %> </h2>
         </td>
         <td class="flex flex-col justify-center items-center px-20 bg-slate-700">
-          <h3 class="text-4xl font-bold bg-red-500"><%= @snippet %></h3>
-
-          <h2 class="text-xl font-bold bg-red-500"><%= @submitted_snippets %> </h2>
-
-          <br>
-            Total Score
-            <h2 class="text-xl font-bold bg-red-500"><%= @total_score %> </h2>
-
-          </td>
-        <td>
-          Session Time
+          <h3 class="font-bold">Total Score</h3>
+          <h2 class="text-xl font-bold bg-red-500 justify-center items-center"><%= @total_score %> </h2>
+        </td>
+        <td class="px-20 py-4">
           <h2 class="text-xl font-bold bg-red-500"><%= @session_timer %> </h2>
         </td>
-      </tr>
-    </table>
+        <td>
+        </td>
+      </tbody>
+    </table> --%>
     </section>
     """
   end
