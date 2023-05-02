@@ -8,7 +8,7 @@ defmodule ElixirWPMWeb.HomeLive do
   import ElixirWPM.Accounts
 
   @default_snippet "my_variable = [360, 420]"
-  @initial_timer 3
+  @initial_timer 30
 
   def mount(_params, session, socket) do
     player_id = if session["user_token"], do: get_user_by_session_token(session["user_token"]).id

@@ -1,14 +1,13 @@
 defmodule ElixirWPMWeb.HomeLiveTest do
 	use ElixirWPMWeb.ConnCase
-	alias ElixirWPMWeb.HomeLive
   import ElixirWPM.AccountsFixtures
 
 
   test "mount/3", %{conn: conn} do
     conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "Welcome to ElixirWPM"
+    assert html_response(conn, 200) =~ "Type a snippet."
     {:ok, view, html} = live(conn, "/")
-    assert html =~ "Welcome to ElixirWPM"
+    assert html =~ "Type a snippet."
   end
 
   test "mount/3 with logged in user", %{conn: conn} do
