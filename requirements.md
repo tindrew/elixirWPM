@@ -140,7 +140,7 @@ make a elapsed_time field in mount
 # final_wpm: take another wpm count starting from initial start to when the
 # session timer ends.
 
-
+login - sudo su - postgres\
 psql postgres #gets you into postgres
 \l lists databases
 \c name_of_table

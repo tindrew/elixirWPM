@@ -7,12 +7,12 @@ defmodule ElixirWPMWeb.HomeLive do
   alias ElixirWPM.Leaderboards
   import ElixirWPM.Accounts
 
-  @default_snippet "my_variable = [360, 420]"
-  @initial_timer 30
+  @default_snippet "123"
+  @initial_timer 3
 
   def mount(_params, session, socket) do
     player_id = if session["user_token"], do: get_user_by_session_token(session["user_token"]).id
-
+    player_name = if session["user_token"], do: get_user_by_session_token(session["user_token"]).player_name
     {:ok,
      assign(socket,
        session_timer: @initial_timer,
@@ -23,7 +23,8 @@ defmodule ElixirWPMWeb.HomeLive do
        snippet: @default_snippet,
        total_score: 0,
        total_word_count: 0,
-       player_id: player_id
+       player_id: player_id,
+       player_name: player_name
      )}
   end
 
@@ -123,6 +124,7 @@ defmodule ElixirWPMWeb.HomeLive do
             Leaderboards.create_player_score(%{
               total_score: socket.assigns.total_score,
               player_id: socket.assigns.player_id,
+              player_name: socket.assigns.player_name
             })
           end
 
