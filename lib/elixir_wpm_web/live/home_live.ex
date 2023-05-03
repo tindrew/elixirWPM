@@ -29,7 +29,7 @@ defmodule ElixirWPMWeb.HomeLive do
 
   def render(assigns) do
     ~H"""
-    <section class="flex flex-col bg_green_pea_300 h-screen w-screen justify-center items-center">
+    <section class="flex flex-col h-screen w-screen justify-center items-center">
     <h2 class="text-3xl intro_text py-8 px-8 text-slate-gray "> Type a snippet.</h2>
     <h3 class="text-4xl font-monoid-bold snippet_text py-4 "><%= @snippet %></h3>
 
@@ -122,7 +122,7 @@ defmodule ElixirWPMWeb.HomeLive do
           if socket.assigns.player_id do
             Leaderboards.create_player_score(%{
               total_score: socket.assigns.total_score,
-              player_id: socket.assigns.player_id
+              player_id: socket.assigns.player_id,
             })
           end
 

@@ -73,6 +73,18 @@
   background-color: #F2D492;
 }
 
+.text_main_orange {
+  color:#f29559
+}
+
+.bg_main_orange {
+  background-color:#d46922
+}
+
+.bg_main_gray {
+  background-color: #202C39;
+}
+
 
 
 /* Alerts and form errors used by phx.new */
