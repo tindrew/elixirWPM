@@ -17,9 +17,28 @@ defmodule ElixirWPM.Leaderboards do
       [%PlayerScore{}, ...]
 
   """
+  # def list_player_scores do
+  #   Repo.all(PlayerScore)
+  # end
+
+  # def list_player_scores do
+  #   Repo.all(PlayerScore, select: [:player_name, :total_score])
+  #   |> Enum.map(&{&1.total_score, &1.player_name})
+  # end
+
   def list_player_scores do
-    Repo.all(PlayerScore)
+    Repo.all(PlayerScore, select: [:player_name, :total_score])
+
   end
+
+  def list_player_names do
+    Repo.all(PlayerScore, select: [:player_name])
+    |> Enum.map(&(&1.player_name))
+  end
+
+
+
+
 
   @doc """
   Gets a single player_score.

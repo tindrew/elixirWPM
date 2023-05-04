@@ -1,4 +1,4 @@
-defmodule ElixirWPMWeb.UserRegistrationView do
+  defmodule ElixirWPMWeb.UserRegistrationView do
   use ElixirWPMWeb, :view
-  
+
 end

@@ -11,6 +11,7 @@ defmodule ElixirWPMWeb.HomeLive do
   @initial_timer 3
 
   def mount(_params, session, socket) do
+    #live session
     player_id = if session["user_token"], do: get_user_by_session_token(session["user_token"]).id
     player_name = if session["user_token"], do: get_user_by_session_token(session["user_token"]).player_name
     {:ok,
