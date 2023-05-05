@@ -2,17 +2,12 @@ defmodule ElixirWPMWeb.LeaderboardLive do
   use ElixirWPMWeb, :live_view
   import Phoenix.LiveView.Helpers
 
-  alias ELixirWPMWeb.Leaderboards
-  import ElixirWPM.Accounts
-  alias ElixirWPM.Leaderboards.PlayerScore
-  alias ElixirWPM.Repo
+
 
   def mount(_params, _session, socket) do
-  #  player_id = if session["user_token"], do: get_user_by_session _token(session["user_token"]).id
-    #  player_scores = ElixirWPM.Leaderboards.list_player_scores()
-    #  player_names = player_scores |> Enum.map(&(&1.player_name))
+    # player_id = if session["user_token"], do: get_user_by_session_token(session["user_token"]).id
+    # player_name = if session["user_token"], do: get_user_by_session_token(session["user_token"]).player_name
     {:ok, assign(socket,
-    # player_names: ElixirWPM.Leaderboards.list_player_names(),
     player_scores: ElixirWPM.Leaderboards.list_player_scores() |> Enum.map(&{&1.player_name, &1.total_score})
     )}
   end
@@ -36,9 +31,8 @@ defmodule ElixirWPMWeb.LeaderboardLive do
     </thead>
     <tbody>
 
-
     <%= for {name, score} <- @player_scores do %>
-      
+
       <tr class="h-12">
         <td class="even border px-4 py-2 text-center font-medium"><%= name %></td>
         <td class="border px-4 py-2 text-center font-medium"><%= score %></td>

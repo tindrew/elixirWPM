@@ -11,7 +11,7 @@ defmodule ElixirWPMWeb.HomeLive do
   @initial_timer 3
 
   def mount(_params, session, socket) do
-    #live session
+    #-
     player_id = if session["user_token"], do: get_user_by_session_token(session["user_token"]).id
     player_name = if session["user_token"], do: get_user_by_session_token(session["user_token"]).player_name
     {:ok,
@@ -121,13 +121,42 @@ defmodule ElixirWPMWeb.HomeLive do
 
           :timer.cancel(socket.assigns.timer)
 
-          if socket.assigns.player_id do
-            Leaderboards.create_player_score(%{
-              total_score: socket.assigns.total_score,
-              player_id: socket.assigns.player_id,
-              player_name: socket.assigns.player_name
-            })
+          # if player exists and score exists?
+          #might need to check what player is logged in
+
+          # assign current score in a variable
+          # compare current score to total_score
+          #if current score is higher, do update
+          current_player = socket.assigns.player_id
+          previously_logged_in_player = Leaderboards.get_player_score!(socket.assigns.player_id)
+          previous_score = Leaderboards.get_player_score!(socket.assigns.player_id)
+          cond do
+            #check the player ID
+            current_player == previously_logged_in_player and socket.assigns.total_score > previous_score ->
+              Leaderboards.update_player_score(current_player, %{total_score: socket.assigns.total_score} ) |> IO.inspect()
+
+            socket.assigns.player_id ->
+              Leaderboards.create_player_score(%{
+                    total_score: socket.assigns.total_score,
+                    player_id: socket.assigns.player_id,
+                    player_name: socket.assigns.player_name
+                  })
           end
+
+          # if socket.assigns.player_id && socket.assigns.total_score do
+          #   # player_score = socket.assigns.total_score
+          #   player_id = Leaderboards.get_player_score!(socket.assigns.player_id)
+
+          #   Leaderboards.update_player_score(player_id, %{total_score: socket.assigns.total_score} ) |> IO.inspect()
+          # else
+
+
+          #   Leaderboards.create_player_score(%{
+          #     total_score: socket.assigns.total_score,
+          #     player_id: socket.assigns.player_id,
+          #     player_name: socket.assigns.player_name
+          #   })
+          # end
 
           assign(socket, playing: false, words_per_minute: wpm)
 

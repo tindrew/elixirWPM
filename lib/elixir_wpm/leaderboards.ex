@@ -17,6 +17,7 @@ defmodule ElixirWPM.Leaderboards do
       [%PlayerScore{}, ...]
 
   """
+
   # def list_player_scores do
   #   Repo.all(PlayerScore)
   # end
@@ -28,17 +29,12 @@ defmodule ElixirWPM.Leaderboards do
 
   def list_player_scores do
     Repo.all(PlayerScore, select: [:player_name, :total_score])
-
   end
 
   def list_player_names do
     Repo.all(PlayerScore, select: [:player_name])
-    |> Enum.map(&(&1.player_name))
+    |> Enum.map(& &1.player_name)
   end
-
-
-
-
 
   @doc """
   Gets a single player_score.
@@ -79,7 +75,7 @@ defmodule ElixirWPM.Leaderboards do
 
   ## Examples
 
-      iex> update_player_score(player_score, %{field: new_value})
+      iex>
       {:ok, %PlayerScore{}}
 
       iex> update_player_score(player_score, %{field: bad_value})
