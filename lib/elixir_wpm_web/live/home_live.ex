@@ -14,6 +14,7 @@ defmodule ElixirWPMWeb.HomeLive do
     #-
     player_id = if session["user_token"], do: get_user_by_session_token(session["user_token"]).id
     player_name = if session["user_token"], do: get_user_by_session_token(session["user_token"]).player_name
+    # previous_player_id
     {:ok,
      assign(socket,
        session_timer: @initial_timer,
@@ -121,26 +122,28 @@ defmodule ElixirWPMWeb.HomeLive do
 
           :timer.cancel(socket.assigns.timer)
 
-          # if player exists and score exists?
-          #might need to check what player is logged in
-
-          # assign current score in a variable
-          # compare current score to total_score
-          #if current score is higher, do update
           current_player = socket.assigns.player_id
           previously_logged_in_player = Leaderboards.get_player_score!(socket.assigns.player_id)
           previous_score = Leaderboards.get_player_score!(socket.assigns.player_id)
+          IO.inspect(previous_score, label: "previously logged in player")
+          IO.inspect(current_player, label: "current player")
+
           cond do
             #check the player ID
             current_player == previously_logged_in_player and socket.assigns.total_score > previous_score ->
               Leaderboards.update_player_score(current_player, %{total_score: socket.assigns.total_score} ) |> IO.inspect()
 
-            socket.assigns.player_id ->
+            current_player != previously_logged_in_player ->
+
               Leaderboards.create_player_score(%{
                     total_score: socket.assigns.total_score,
                     player_id: socket.assigns.player_id,
                     player_name: socket.assigns.player_name
                   })
+                  #add conditional login for "If logged in then do pubsub"
+                  updated_player_score = ElixirWPM.Leaderboards.list_player_scores()
+                  Phoenix.PubSub.broadcast(ElixirWPM.PubSub, "score_board", {:player_scores, {updated_player_score}})
+
           end
 
           # if socket.assigns.player_id && socket.assigns.total_score do
@@ -158,7 +161,10 @@ defmodule ElixirWPMWeb.HomeLive do
           #   })
           # end
 
+
           assign(socket, playing: false, words_per_minute: wpm)
+
+
 
         _ ->
           assign(socket, session_timer: socket.assigns.session_timer - 1)

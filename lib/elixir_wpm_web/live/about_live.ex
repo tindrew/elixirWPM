@@ -8,8 +8,8 @@ defmodule ElixirWPMWeb.AboutLive do
 
   def render(assigns) do
     ~H"""
-    <div class="container flex justify-center">
-      <p >The project came about from conversations between myself, Bill Boz, and Brooklin Myers.
+    <div class="container flex items-center justify-center font-monoid ">
+      <p class="w-3/4 text-1xl text-slate-gray">The project came about from conversations between myself, Bill Boz, and Brooklin Myers.
       During the beta cohort of Dockyard Academy, Bill and I had many, many conversations surrounding muscle memory,
       our wish to have more repetition as a way to retain the basics of the language, even coming up with the concept
       of an elixir "drillbook" which could be used to just type snippets of code over and over.

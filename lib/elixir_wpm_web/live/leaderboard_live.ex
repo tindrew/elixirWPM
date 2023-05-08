@@ -5,6 +5,7 @@ defmodule ElixirWPMWeb.LeaderboardLive do
 
 
   def mount(_params, _session, socket) do
+    Phoenix.PubSub.subscribe(ElixirWPM.PubSub, "score_board")
     # player_id = if session["user_token"], do: get_user_by_session_token(session["user_token"]).id
     # player_name = if session["user_token"], do: get_user_by_session_token(session["user_token"]).player_name
     {:ok, assign(socket,
@@ -45,4 +46,11 @@ defmodule ElixirWPMWeb.LeaderboardLive do
     </div>
     """
   end
+
+  def handle_info({:player_scores, {updated_player_score}}, socket) do
+    {:noreply, assign(socket, :player_scores, updated_player_score |> Enum.map(&{&1.player_name, &1.total_score})) }
+
+  end
+
+
 end
