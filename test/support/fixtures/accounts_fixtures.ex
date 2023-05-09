@@ -6,7 +6,7 @@ defmodule ElixirWPM.AccountsFixtures do
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
-  def valid_player_name, do: "player1"
+  def valid_player_name, do: "player_1"
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
