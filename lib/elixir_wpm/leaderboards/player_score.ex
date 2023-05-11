@@ -16,4 +16,7 @@ defmodule ElixirWPM.Leaderboards.PlayerScore do
     |> validate_required([:total_score, :player_id, :player_name])
     |> foreign_key_constraint(:player_id)
   end
+
+
+  
 end

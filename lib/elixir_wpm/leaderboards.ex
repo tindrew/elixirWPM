@@ -28,7 +28,9 @@ defmodule ElixirWPM.Leaderboards do
   # end
 
   def list_player_scores do
-    Repo.all(PlayerScore, select: [:player_name, :total_score])
+    query = from PlayerScore, order_by: [desc: :total_score], limit: 10
+    # Repo.all(PlayerScore, select: [:player_name, :total_score])
+    Repo.all(query)
   end
 
   def list_player_names do

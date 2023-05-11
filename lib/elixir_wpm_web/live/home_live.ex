@@ -7,8 +7,8 @@ defmodule ElixirWPMWeb.HomeLive do
   alias ElixirWPM.Leaderboards
   import ElixirWPM.Accounts
 
-  @default_snippet "123"
-  @initial_timer 3
+  @default_snippet "my_num = 1337"
+  @initial_timer 20
 
   def mount(_params, session, socket) do
     # -
@@ -37,7 +37,7 @@ defmodule ElixirWPMWeb.HomeLive do
     ~H"""
     <section class="flex flex-col h-screen w-screen justify-center items-center">
     <h2 class="text-3xl intro_text py-8 px-8 text-slate-gray "> Type a snippet.</h2>
-    <h3 class="text-4xl font-monoid-bold snippet_text py-4 "><%= @snippet %></h3>
+    <h3 class="text-3xl font-monoid-bold snippet_text py-4 "><%= @snippet %></h3>
 
 
     <%= if @session_timer == 0 do %>
@@ -166,8 +166,7 @@ defmodule ElixirWPMWeb.HomeLive do
         <h2 class="text-khaki-500 font-monoid-bold text-3xl"><%= @words_per_minute %></h2>
       </div>
       <div class="font-monoid flex flex-col items-center justify-center">
-      <%!-- <h3>Snippets</h3>
-      <h2 class="text-xl font-bold bg-red-500"><%= @submitted_snippets %> </h2> --%>
+
         <h3 class="text-slate-gray font-monoid-bold text-xl mb-3">Total Score</h3>
         <h2 class="text-6xl font-monoid-bold score-text justify-center items-center"><%= @total_score %> </h2>
       </div>

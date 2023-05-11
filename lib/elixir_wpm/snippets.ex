@@ -1,8 +1,21 @@
 defmodule ElixirWPM.Snippets do
   @snippets [
-    "123",
-    "123,123,123",
-    "asdf,asdf,asdf,asdf"
+    "Enum.map([1, 2, 3], fn x -> x * 2 end)",
+    "if(foo, do: bar)",
+    "IO.inspect(number)",
+    "[1, 2, 3] = [a, b, c]",
+    "{elixir: \"rules\"}",
+    "add = fn a, b -> a + b end",
+    "for n <- [1, 2, 3, 4], do: n * 2",
+    "Float.floor(12.52, 2)",
+    "Float.ceil(34.25)",
+    "Float.to_charlist(7.0)",
+    "start = DateTime.utc_now()",
+    "text_input = form_data[\"textinput\"][\"name\"]",
+    
+
+
+
   ]
   def random() do
     Enum.random(@snippets)

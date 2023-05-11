@@ -42,9 +42,33 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
-document.addEventListener("unhide", () => {
-    const button = document.getElementById("start-button");
-    button.classList.remove("hidden");
-    console.log("Im here!")
-  });
+let Hooks = {
+  InfiniteScroll: {
+      page() { return parseInt(this.el.dataset.page) },
+      // a helper function to get the current scroll percentage
+      scrollAt() {
+          return this.el.scrollTop / (this.el.scrollHeight - this.el.clientHeight) * 100
+      },
+      mounted() {
+          this.pending = this.page()
+          this.el.addEventListener("scroll", e => {
+              // do not load more if there is already a pending page greater than the current page.
+              // this ensures we don't re-trigger the load-more event multiple times
+              if (this.pending == this.page() && this.scrollAt() > 90) {
+                  this.pending = this.pending + 1
+                  // send the "load-more" event to the server.
+                  this.pushEvent("load-more", {})
+              }
+          })
+      },
+      updated() {
+          // reset the pending page when the messages have been loaded.
+          this.pending = this.page()
+      }
+  },
+}
+
+
+// We then provide the `Hooks` object to our `LiveSocket`.
+new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks })
   

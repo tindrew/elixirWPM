@@ -28,6 +28,12 @@
   src: url('../fonts/Monoid-Retina.ttf');
 }
 
+.centered-div {
+  
+  margin: auto;
+  margin-top: 5rem;
+}
+
 
 .test_class {
   font-size: large;
@@ -83,6 +89,11 @@
 
 .bg_main_gray {
   background-color: #202C39;
+}
+
+.table-font {
+  font-family: 'Monoid-bold';
+  color: #314255
 }
 
 
