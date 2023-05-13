@@ -8,7 +8,7 @@ defmodule ElixirWPMWeb.AboutLive do
 
   def render(assigns) do
     ~H"""
-    <div class=" w-3/4  border rounded border-slate-500 font-monoid font-bold centered-div py-8 ">
+    <div class=" w-1/2  border rounded border-slate-500 font-monoid font-bold centered-div py-8 ">
       <p class=" text-1xl text-slate-gray px-2  leading-10">
 
       This project is meant to be more than just a game. While on its face it has many of the same
@@ -21,7 +21,8 @@ defmodule ElixirWPMWeb.AboutLive do
       instead suggesting the use of copy-and-paste. However, this approach hinders beginners'
       ability to recall and solve problems, as they struggle to remember what to type. With this app,
       we hope to help solve this issue for Elixir learners by providing a platform to practice and reinforce
-      their coding skills, helping them remember the concepts they may have forgotten while learning.</p>
+      their coding skills, helping them remember the concepts they may have forgotten while learning,
+      while also having a bit of fun!.</p>
     </div>
     """
   end

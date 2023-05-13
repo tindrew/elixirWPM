@@ -1,5 +1,5 @@
 
-<div class="container w-screen flex justify-center h-full mt-20 p-0 m-0">
+<div class="container w-screen flex justify-center h-full mt-20 p-0 m-0 font-monoid">
 <h1 class="font-monoid-bold text-3xl flex flex-col justify-center px-20">Register</h1>
 <.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)} class="bg_main_gray flex flex-col py-5 px-5 rounded-md">
   <%= if @changeset.action do %>

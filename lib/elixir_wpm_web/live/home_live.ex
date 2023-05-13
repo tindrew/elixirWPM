@@ -1,6 +1,5 @@
 defmodule ElixirWPMWeb.HomeLive do
   use ElixirWPMWeb, :live_view
-
   import Phoenix.LiveView.Helpers
 
   alias ElixirWPM.Snippets
@@ -8,7 +7,7 @@ defmodule ElixirWPMWeb.HomeLive do
   import ElixirWPM.Accounts
 
   @default_snippet "my_num = 1337"
-  @initial_timer 20
+  @initial_timer 60
 
   def mount(_params, session, socket) do
     # -
@@ -37,7 +36,7 @@ defmodule ElixirWPMWeb.HomeLive do
     ~H"""
     <section class="flex flex-col h-screen w-screen justify-center items-center">
     <h2 class="text-3xl intro_text py-8 px-8 text-slate-gray "> Type a snippet.</h2>
-    <h3 class="text-3xl font-monoid-bold snippet_text py-4 "><%= @snippet %></h3>
+    <h3 class="text-2xl font-monoid-bold snippet_text py-4 "><%= @snippet %></h3>
 
 
     <%= if @session_timer == 0 do %>
@@ -50,8 +49,8 @@ defmodule ElixirWPMWeb.HomeLive do
       <% else %>
 
       <.form let={f} phx-submit="submit"  phx-change="change" for={:textinput} autocomplete="off">
-      <%= text_input f, :name,  value: @text_input, class: "flex w-full border-transparent
-       appearance-none border border-gray-300 py-2 px-4 placeholder-gray-400 text-base focus:outline-none focus:ring-amber-600 focus:border-transparent"%>
+      <%= text_input f, :name,  value: @text_input, onpaste: "return false", class: "flex w-96 border-transparent
+       appearance-none border border-gray-300   placeholder-gray-400 text-base focus:outline-none focus:ring-amber-600 focus:border-transparent" %>
     </.form>
     <% end %>
     <.my_table snippet={@snippet} session_timer={@session_timer} submitted_snippets={@submitted_snippets} words_per_minute={@words_per_minute} total_score={@total_score}/>
@@ -124,7 +123,6 @@ defmodule ElixirWPMWeb.HomeLive do
           wpm = calculate_wpm(total_word_count, finish, start)
 
           :timer.cancel(socket.assigns.timer)
-
 
           if socket.assigns.player_id do
             Leaderboards.create_player_score(%{
